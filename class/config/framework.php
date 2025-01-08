@@ -97,7 +97,7 @@
  */
         public static function initialise() : void
         {
-            \error_reporting(E_ALL | E_STRICT);
+            \error_reporting(E_ALL);
 /*
  * Setup the autoloader
  */
