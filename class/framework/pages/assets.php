@@ -1,0 +1,120 @@
+<?php
+/**
+ * Handle assets access if that is what is wanted
+ *
+ * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
+ * @copyright 2016-2021 Newcastle University
+ * @package Framework
+ * @subpackage SystemPages
+ */
+    namespace Framework\Pages;
+
+    use \Support\Context;
+/**
+ * Handle all the cacheing stuff and maybe return a file
+ */
+    class Assets extends \Framework\SiteAction
+    {
+/** @var string The file name */
+        private string $file = '';
+/** @var int    Last modified time for the file */
+        private int $mtime = 0;
+/** @var array<string> Mime type values */
+        private static array $mtypes = [
+            ''      => 'text/plain',
+            'css'   => 'text/css',
+            'js'    => 'text/javascript',
+            'png'   => 'image/png',
+            'jpg'   => 'image/jpeg',
+            'jpeg'  => 'image/jpeg',
+            'gif'   => 'image/gif',
+            'ico'   => 'image/x-icon',
+        ];
+/**
+ * Handle access to things in assets
+ *
+ * You can rely on Apache to deal with these things normally, however if
+ * you really want to get cacheability to be complete you either have to go through hoops
+ * in the Apache config or you code it in here!
+ *
+ * @param Context   $context    The context object for the site
+ */
+        public function handle(Context $context) : array|string
+        {
+            \chdir($context->local()->assetsdir());
+
+            $rest = $context->rest();
+            $this->file = implode(DIRECTORY_SEPARATOR, $rest);
+            $this->mtime = filemtime($this->file);
+/**
+ * PHP file info does not give the correct mime type for compressed css files
+ * so we need to do it ourselves which is a pain
+ */
+            $fname = \array_pop($rest);
+            /** @psalm-suppress PossiblyFalseArgument */
+            $dotp = strrchr($fname, '.');
+            if ($dotp !== FALSE)
+            {
+                $ext = \strtolower(\substr($dotp, 1));
+            }
+            else
+            {
+                $ext = '';
+            }
+            $mime =  self::$mtypes[$ext] ??  \Framework\Support\Security::getInstance()->mimetype($this->file);
+            $mag = $this->makemaxage($context);
+            $web = $context->web();
+            $web->addheader([
+//              'Last-Modified' => $this->makemod($this->mtime),
+                'Etag'          => '"'.$this->makeetag($context).'"',
+                'Expires'       => $this->makemod(time()+$mag),
+                'Cache-Control' => 'max-age='.$mag.',stale-while-revalidate=86400,stale-if-error=259200',
+            ]);
+            $this->ifmodcheck($context);
+            $web->sendfile($this->file, $fname, $mime);
+            return '';
+        }
+/**
+ * Make an etag - overrides the function in SiteAction
+ *
+ * @param Context   $context   The context object for the site
+ */
+        public function makeetag(Context $context) : string
+        {
+            return \sprintf('%u', \crc32($this->file)).'-'.$this->mtime.'-'.($context->web()->acceptgzip() ? 1 : 0);
+        }
+/**
+ * Check an etag to see if we need to send the page again or not.
+ *
+ * @param Context   $context    The context object for the site
+ * @param string    $tag        The etag value to check
+ */
+        public function checketag(Context $context, string $tag) : bool
+        {
+            return \substr($tag, 0, -1) === \substr($this->makeetag($context), 0, -1);
+        }
+/**
+ * Make a maximum age - overrides function in SiteAction
+ *
+ * An hour for the most recent volume and a year for everything else
+ *
+ * @param Context    $context   The context object for the site
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+ */
+        public function makemaxage(Context $context) : int
+        {
+            return 3600*24*365; // make it a year
+        }
+/**
+ * Check a timestamp to see if we need to send the page again or not - overriding method in SiteAction
+ *
+ * @param Context   $context    The context object for the site
+ * @param string    $time       The time value to check
+ * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
+ */
+        public function checkmodtime(Context $context, string $time) : bool
+        {
+            return $this->mtime > $time;
+        }
+    }
+?>

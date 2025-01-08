@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<psalm
+    totallyTyped="false"
+    errorLevel="2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="https://getpsalm.org/schema/config"
+    xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <file name="../devel/configmock.php" />
+        <file name="../devel/phpmmock.php" />
+        <file name="../devel/redmock.php" />
+        <file name="../devel/r.php" />
+
+        <directory name="../class" />
+        <file name="../ajax.php" />
+        <file name="../index.php" />
+        <ignoreFiles>
+            <directory name="../class/framework/utility/jwt" />
+            <directory name="../vendor" />
+            <directory name="../install" />
+            <directory name="../testing" />
+            <directory name="../twigs" />
+            <file name="../devel/hack.php" />
+            <file name="../devel/testautoload.php" />
+            <file name="../install.php" />
+        </ignoreFiles>
+    </projectFiles>
+    <taintAnalysis>
+        <ignoreFiles>
+            <file name="../class/framework/support/testsupport.php" />
+        </ignoreFiles>
+    </taintAnalysis>
+</psalm>

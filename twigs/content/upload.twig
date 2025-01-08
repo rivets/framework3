@@ -1,0 +1,22 @@
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+
+{% block headerbody %}
+    <h1>Upload a File</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="mx-auto col">
+            {% include '@util/message.twig' %}
+            {{f.startform({method: 'post', multi: TRUE})}}
+                {{f.file({label: 'File', name: 'uploads[]', required: TRUE})}}
+                {{f.submit({value: 'Upload'})}}
+            {{f.endform()}}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

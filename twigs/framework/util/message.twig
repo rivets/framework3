@@ -1,0 +1,16 @@
+    {% set fwm = include('@util/fwmessages.twig')|trim %}
+    {% if fwm != '' %}
+        {% if userow is defined%}
+            <div class="{{userow ?: 'row'}}">
+        {% endif %}
+        {% if usecol is defined%}
+            <div class="{{usecol ?: 'col-md-12 text-center'}}">
+        {% endif %}
+        {{fwm|raw}}
+        {% if usecol is defined%}
+            </div>
+        {% endif %}
+        {% if userow is defined%}
+            </div>
+        {% endif %}
+    {%endif %}

@@ -1,0 +1,178 @@
+{% set fwutils = TRUE %}
+{% set breadcrumbs = [{link: base, text: 'Home'}, {link: base ~ '/admin/', text: 'Admin'}, {text: 'Config'}] %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@content/iconmacro.twig' as i %}
+{% import '@util/formmacro.twig' as f %}
+
+{% set patch = constant('Config\\Config::PUTORPATCH') %}
+{% set config = constant('Config\\Framework::CONFIG') %}
+
+{% block setup %}
+    function setlocal(e)
+    {
+        e.preventDefault();
+        const id = fwdom.data(e.target, 'id');
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/local/', {
+            method: '{{patch}}', // because we are updating an item
+            data: {
+                value: e.target.checked ? 1 : 0
+            }
+        }).fail(function(jx){
+            framework.alert('<h3>Update failed</h3>'+jx.responseText);
+        });
+    }
+
+    function delbean(e)
+    {
+        framework.dodelbean(e, this, '{{config}}');
+    }
+
+    function makeConfig(name, value, type, local)
+    {
+        framework.ajax('{{base}}/ajax/config/'+name, {
+            method: 'POST', // because we are creating a new item
+            data: {
+                value,
+                type,
+                local
+            }
+        }).done(function(data){
+            let newd = document.createElement('div');
+            let nname = document.getElementById('Xnewconf');
+            newd.setAttribute('data-id', data);
+            newd.classList.add('row');
+            newd.classList.add('mb-2');
+            newd.innerHTML =
+                '<label class="col-md-1 col-form-label" for="X'+name+'">'+name+'</label>'+
+                    '<div class="col-md-9">'+
+                            '<input type="text" id="X'+name+'" name="'+name+'" value="'+value+'" class="form-control cval"/>'+
+                    '</div>'+
+                    '<div class="col-md-2">'+
+                        '<div class="form-check form-check-inline">'+
+                            '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
+                        '</div>{{i.delete('delb')}}</div></div>';
+            document.getElementById('cfr').insertBefore(newd, document.getElementById('nvbox').previousElementSibling);
+            fwdom.on('.delb', 'click', delbean, newd)
+            fwdom.on('.lval', 'change', setlocal, newd)
+            nname.value = '';
+            document.getElementById('Xnewlocal').checked = 0;
+            document.getElementById('Xnewval').value = '';
+            document.getElementById('Xnewtype').value = '';
+            document.getElementById('inval').classList.add('d-none');
+        }).fail(function(jx){
+            framework.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
+        });
+    }
+{% endblock setup %}
+
+{% block onload %}
+    fwdom.on('#cfr', 'submit', function(e){ e.preventDefault(); });
+    fwdom.on('.delb', 'click', delbean);
+    fwdom.on('.lval', 'change', setlocal)
+    fwdom.on('.cval', 'blur', function(e){
+        fwdom.stop(e);
+        const id = fwdom.data(e.target, 'id');
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/value/', {
+            method: '{{patch}}', // because we are updating an item
+            data: { value: this.value }
+        }).fail(function(jx){
+            framework.alert('<h3>Update failed</h3>'+jx.responseText);
+        });
+// clear out integrity and crossorigin - they might be diferent
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/integrity/', {
+            method: '{{patch}}', // because we are updating an item
+            data: { value: '' }
+        }).fail(function(jx){
+            framework.alert('<h3>Update failed</h3>'+jx.responseText);
+        });
+        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/crossorigin/', {
+            method: '{{patch}}', // because we are updating an item
+            data: { value: '' }
+        }).fail(function(jx){
+            framework.alert('<h3>Update failed</h3>'+jx.responseText);
+        });
+    });
+    fwdom.on('#Xnewconf', 'blur', function(e){
+        fwdom.stop(e);
+        const name = this.value;
+        if (name != '')
+        {
+            if (!name.match(/^[a-z][a-z0-9]*$/i))
+            {
+                framework.alert('Invalid name format')
+                this.value = ''
+            }
+            else
+            {
+                framework.ajax(base+'/ajax/unique/{{config}}/name/'+name, {method: 'get'}).done(function(d){
+                    document.getElementById('inval').classList.remove('d-none');
+                }).fail(function(d){
+                    framework.alert('That item already exists');
+                });
+            }
+        }
+    })
+    fwdom.on('#Xnewval', 'blur', function(e){
+        fwdom.stop(e);
+        const type = document.getElementById('Xnewtype').value;
+        const name = document.getElementById('Xnewconf').value;
+        const local = document.getElementById('Xnewlocal').checked ? 1 : 0;
+        makeConfig(name, this.value, type, local);
+    });
+{% endblock onload %}
+
+{% block headerbody %}
+    <h1>Configuration Values</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="col-md-12">
+            {{f.startform({id: 'cfr', method: 'post'})}}
+                {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+                {% for p in siteinfo.siteconfig(page, pagesize) %}
+                    <div class="row mb-2" data-id="{{p.getID}}">
+                        <label class="col-md-1 col-form-label" for="X{{p.getID}}">{{p.name}}</label>
+                        <div class="col-md-9">
+                            <input type="text" id="X{{p.getID}}" name="{{p.name}}" value="{{p.value}}" class="form-control cval"/>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L{{p.name}}"{%if p.local %} checked="checked"{% endif %}/> Local</label>
+                            </div>
+                            <a href="{{base}}/admin/edit/{{constant('Config\\Framework::CONFIG')}}/{{p.getID}}/">{{i.edit('editb')}}</a>
+                            {% if not p.fixed %}
+                                {{i.delete('delb')}}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+{# todo: fix item names in this bit to avoid potential future clashes of names added by others #}
+                {% include '@util/paginate.twig' with { page : page, pagesize: pagesize, pages: pages} %}
+                <div class="jumbotron" id="nvbox">
+                    {{f.text({label: 'New Config Item', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
+                    <div id="inval" class="d-none">
+                        {{f.text({label: 'New Value', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
+                        {{f.select({label : 'Type', id: 'Xnewtype',
+                            options: [
+                                { value: '',  text: '&mdash; Pick a Type &mdash;' },
+                                { value: 'boolean', text: 'boolean' },
+                                { value: 'css', text: 'css' },
+                                { value: 'integer', text: 'integer' },
+                                { value: 'js', text: 'js' },
+                                { value: 'string', text: 'string' },
+                            ]
+                        })}}
+                        {{f.checkbox({ids: ['Xnewlocal'], labels: ['Local'], values : [1]})}}
+                    </div>
+                </div>
+            {{f.endform()}}
+        </div>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{# I don't want a footer #}
+{% endblock pagefooter %}

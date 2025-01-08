@@ -1,0 +1,17 @@
+{% extends '@content/page.twig' %}
+
+{% block headerbody %}
+    <h1>Oooops!</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="mx-auto col">
+            <p>You cannot run the installer after a successful installation!</p>
+            <p>Go <a href="{{base}}/">home</a></p>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

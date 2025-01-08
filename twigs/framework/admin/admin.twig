@@ -1,0 +1,18 @@
+{% extends '@content/page.twig' %}
+
+{% block headerbody %}
+    <h1>Admin</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="mx-auto col">
+            {% include '@util/message.twig' %}
+            <p>Please select an administrator action from the navigation bar.</p>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{# I don't want a footer #}
+{% endblock pagefooter %}

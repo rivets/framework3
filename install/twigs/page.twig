@@ -1,0 +1,50 @@
+<!doctype html>
+<!--[if lt IE 9]><html class="ie"><![endif]-->
+<!--[if gte IE 9]><!--><html><!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Framework Installer</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content="Framework Installer"/>
+
+    <link rel="stylesheet" href="{{fwurls.bootcss[0]}}" media="screen,print"/>
+    <link rel="stylesheet" href="{{fwurls.facss[0]}}"/>
+
+{% block css %}
+{% endblock css %}
+
+</head>
+<body lang="en-GB">
+    <div class="container">
+	<article class="mainbody">
+	    {% block main %}
+	    {% endblock main %}
+	</article>
+    </div>
+
+    <script src="{{fwurls.jqueryslim[0]}}"></script>
+
+    <script src="{{fwurls.popperjs[0]}}"></script>
+    <script src="{{fwurls.bootjs[0]}}"></script>
+    <script src="{{fwurls.bootbox[0]}}"></script>
+
+    {% block scripts %}
+    {% endblock scripts %}
+
+    {% if block('setup') is defined or block('onload') is defined %}
+        <script>
+            {% block setup %}
+            {% endblock setup %}
+    
+            {% if block('onload') is defined %}
+                $(function(){
+                    {% block onload %}
+                    {% endblock onload %}
+                })
+            {% endif %}
+        </script>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,186 @@
+{% set fwutils = TRUE %}
+{% set usebootbox = FALSE %}
+{% set validate = TRUE %}
+{% set editable = TRUE %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@content/iconmacro.twig' as i %}
+{% import '@util/formmacro.twig' as f %}
+
+{% set types = ['text', 'textarea', 'email', 'password', 'checkbox',
+    'radio', 'select', 'file', 'range', 'number', 'button', 'submit',
+    'label', 'fieldset', 'endfset', 'recaptcha'] %}
+
+{% block setup %}
+    function mkinline(type, name, msg, id, value)
+    {
+        return '{{f.editable({type: f.wrap('type'), field: f.wrap('name'), title: f.wrap('msg'), key: f.wrap('id'), value: f.wrap('value')})}}';
+    }
+
+    let kname = [
+        {% for v in types %}
+            {value: '{{v}}', text: '{{v}}'}{{loop.last ? '' : ','}}
+        {% endfor %}
+    ]
+    const clicks = [
+        ['delb', framework.dodelbean, ''],
+        ['more', framework.addmore, ''],
+        ['chkb', framework.dotoggle, 'checked'],
+        ['reqb', framework.dotoggle, 'required'],
+        ['rdob', framework.dotoggle, 'readonly'],
+        ['disb', framework.dotoggle, 'disabled'],
+    ];
+{% endblock setup %}
+
+{% block onload %}
+    document.querySelectorAll('.editable').forEach(function(edb){
+        fweditable.editable(edb, {
+            op: 'bean',
+            bean: '{{constant('Config\\Framework::FORMFIELD')}}',
+            source: kname,
+            update: fweditable.editUpdate
+        });
+    });
+
+    fwdom.on('#ptab', 'click', function(e) {
+        const ecl = e.target.classList;
+        for (let cl of clicks)
+        {
+            let [cls, fn, par] = cl;
+            if (ecl.contains((cls))
+            {
+                fn(e, e.target, '{{constant('Config\\Framework::FORMFIELD')}}', par);
+                break;
+            }
+        }
+    });
+    fwdom.on('.typesel', 'change', function(e){
+        const val = this.value;
+        const fsel = document.getElementById('example').querySelector('.flagsel');
+        fsel.querySelector('input[name="fldchecked"]').setAttribute('checked', false)
+        fsel.querySelector('input[name="fldchecked"]').setAttribute('disabled', !(val == 'checkbox' || val == 'radio'))
+        fsel.querySelector('input[name="fldmultiple"]').setAttribute('checked', false)
+        fsel.querySelector('input[name="fldmultiple"]').setAttribute('disabled', val != 'select')
+    }, document.getElementById('example'));
+{% endblock onload %}
+
+{% block headerbody %}
+    <h1>Edit Form "{{bean.name}}" <a href="{{base}}/admin/view/form/{{bean.id}}">{{i.view('viewb')}}</a></h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="col-md-12">
+            {% include '@util/message.twig' %}
+            <form id="addform" action="#" method="post">
+                {{f.hidden({name: 'bean', value: bean.id})}}
+                {{bean.guard|raw}}
+                <fieldset>
+                    <legend>Form details</legend>
+                        {{f.text({label: 'Form Name', ph: 'Form Name - alphanumeric characters only', name: 'name', required: TRUE, value: bean.name, valid: {trigger: 'blur', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Action', ph: 'Form Action URL', name: 'action', value: bean.action, valid: {trigger: 'blur', type: 'url'} })}}
+                        {{f.text({label: 'Form ID', ph: 'Form ID', name: 'idval', value: bean.idval, valid: {trigger: 'blur', type: 'alphanum'} })}}
+                        {{f.text({label: 'Form Class', ph: 'Form Class', name: 'class', value: bean.class})}}
+                        {{f.radio({group: TRUE, name: 'method', values:[1, 2, 0], labels: ['GET', 'POST', 'PARTIAL'], check: [bean.method == 1, bean.method == 2, bean.method == 0]})}}
+                        {{f.checkbox({group: TRUE, names: ['multipart'], values:[1], check: [bean.multipart], labels: ['Multipart Encoded']})}}
+                </fieldset>
+                <fieldset>
+                    <legend>Field details</legend>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th colspan="5">Attributes</th>
+                                {#<th>Label</th>
+                                <th>Name</th>
+                                <th>ID</th>
+                                <th>Class</th>
+                                <th>Placeholder</th>
+                                <th>Value</th>
+                                <th>Checked</th>
+                                <th>Required</th>
+                                <th>Readonly</th>
+                                <th>Disabled</th> #}
+                                <th>&nbsp;</th>
+                           </tr>
+                        </thead>
+                        <tbody id="ptab">
+                            {% for fld in bean.fields %}
+                                <tr data-id="{{fld.getID}}" class="border-top border-dark">
+                                    <td rowspan="3">
+                                        <p>{{f.editable({type: 'select', field: 'type', title: 'Select Type', key: fld.getID, value: fld.type})}}{{f.hidden({name: 'fldid[]', value: fld.getID})}}</p>
+                                        <p>{{f.editable({type: 'text', field: 'seqn', title: 'Enter seqn no.', key: fld.getID, value: fld.seqn})}}</td>
+                                    </td>
+                                    <td>{{f.editable({type: 'text', field: 'label', title: 'Enter label', key: fld.getID, value: fld.label})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'name', title: 'Enter name', key: fld.getID, value: fld.name})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'idval', title: 'Enter id', key: fld.getID, value: fld.idval})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'class', title: 'Enter class', key: fld.getID, value: fld.class})}}</td>
+                                    <td>{{f.editable({type: 'text', field: 'value', title: 'Enter value', key: fld.getID, value: fld.value})}}</td>
+                                    <td rowspan="3">{{i.delete('delb')}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">{{f.editable({type: 'text', field: 'placeholder', title: 'Enter placeholder', key: fld.getID, value: fld.placeholder)}}</td>
+                                    <td colspan="3">{{f.editable({type: 'text', field: 'other', title: 'Enter other attributes', key: fld.getID, value: fld.other)}}</td>
+                                </tr>
+                                <tr>
+                                    {% for fn,fv in flags %}
+                                        <td>{{f.htick(fld.flags b-and fv.2, 'chkb', fn~'[]', fld.type != 'checkbox' and fld.type != 'radio', fv.0)}}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                            <tr id="example">
+                                <td colspan="7">
+                                    <table>
+                                        <tbody>
+                                            <tr data-id="new" class="border-top border-dark">
+                                                <td rowspan="3">
+                                                    <p>
+                                                        <select class="typesel" name="type[]">
+                                                            <option value="">&mdash; Type &mdash;</option>
+                                                            {% for v in types %}
+                                                                <option value="{{v}}">{{v}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </p>
+                                                    <p>
+                                                        <input type="text" name="fldseqn[]" placeholder="seqn. no." class="form-control col-md-8"/>
+                                                    </p>
+                                                </td>
+                                                <td><input type="text" name="fldlabel[]" placeholder="label" class="form-control"/>{{f.hidden({name: 'new[]', value: 0})}}</td>
+                                                <td><input type="text" name="fldname[]" placeholder="name" class="form-control"/></td>
+                                                <td><input type="text" name="fldidval[]" placeholder="id" class="form-control"/></td>
+                                                <td><input type="text" name="fldclass[]" placeholder="class" class="form-control"/></td>
+                                                <td><input type="text" name="fldvalue[]" placeholder="value" class="form-control"/></td>
+                                                <td rowspan="3">&nbsp</td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2"><input type="text" name="fldplaceholder[]" placeholder="placeholder" class="form-control"/></td>
+                                                <td colspan="3"><input type="text" name="fldother[]" placeholder="Other attributes" class="form-control"/></td>
+                                            </tr>
+                                            <tr class="flagsel">
+                                                {% for fn, fv in flags %}
+                                                    <td>
+                                                        {{f.checkbox({labels:[fv.0], names: ['fld'~fn~'[]'], disabled: [fv.1], values: [fv.2]})}}
+                                                    </td>
+                                                {% endfor %}
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr id="mrow">
+                                <td colspan="10">&nbsp;</td>
+                                <td colspan="2"><button class="more btn btn-xs btn-info float-end">Add More</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+                <button class="btn btn-primary btn-lg" type="submit">Save</button>
+            </form>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

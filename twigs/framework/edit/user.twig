@@ -1,0 +1,55 @@
+{% set fwutils = TRUE %}
+{% set validate = TRUE %}
+{% set usebootbox = FALSE %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+
+{% block onload %}
+    fwdom.on('#more', 'click', function(e){
+        fwdom.stop(e);
+        const mrow = $('#mrow');
+        mrow.before($('#example').clone());
+        const pr = mrow.prev();
+        $('input', pr).val(''); // clear the inputs
+        $('option', pr).prop('selected', false); // clear any selections
+        fwdom.on('.delb', 'click', function(e){
+            framework.dodelbean(e, this, '{{constant('Config\\Framework::ROLE')}}');
+        }, pr);
+    });
+    fwdom.on(''#uform', 'submit', function(e){
+        return $(this).parsley().validate();
+    });
+    fwdom.on('.delb', 'click', function(e){
+        framework.dodelbean(e, this, '{{constant('Config\\Framework::ROLE')}}');
+    });
+{% endblock onload %}
+
+{% block headerbody %}
+    <h1>User &ldquo;{{bean.login}}&rdquo;</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="offset-md-1 col">
+            {% include '@util/message.twig' %}
+            <form action="#" method="post" id="uform" data-parsley-validate>
+                {{f.hidden({name: 'bean', value: bean.id})}}
+                {{bean.guard|raw}}
+                <fieldset>
+                    <legend>Login details</legend>
+                    {{f.text({ label: 'Login', id: 'ln', name: 'login', value: bean.login, readonly: TRUE })}}
+                    {{f.email({ label: 'Email', id: 'em', name: 'email', value: bean.email, required: TRUE })}}
+                    {{f.password({ label: 'Password', id: 'psw', name: 'pw', ph: 'Password' })}}
+                    {{f.password({ label: 'Repeat Password', id: 'rpsw', name: 'rpw', ph: 'Repeat Password', valid: {'equalto': '#psw', 'trigger': 'change'} })}}
+                </fieldset>
+                {% include '@admin/roleselect.twig' with { bean : bean } %}
+                <button class="btn btn-primary btn-lg" type="submit">Save</button>
+            {{f.endform()}}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

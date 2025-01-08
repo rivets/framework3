@@ -1,0 +1,53 @@
+{% set fwutils = TRUE %}
+{% set usebootbox = FALSE %}
+{% set usejquery = FALSE %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+{% import '@util/modalmacro.twig' as m %}
+
+{% set ops = [ 'bean', 'config', 'hints', 'js', 'paging', 'pwcheck', 'shared', 'table', 'tablecheck', 'tablesearch', 'toggle', 'unique', 'uniquenl'] %}
+
+{% block scripts %}
+    <script src="{{assets}}/js/testajax-min.js"></script>
+{% endblock scripts %}
+
+{% block setup %}
+    let goodlogin = '{{context.user.login}}';
+    let userbean = '{{constant('Config\\Framework::USER')}}';
+    let testtable = '{{constant('Config\\Framework::TEST')}}';
+    let testbeanid = {{bean.getID}};
+{% endblock setup %}
+
+{% block onload %}
+    for (var op of testing.ajaxops)
+    {
+        fwdom.on('#'+op, 'click', testing['test'+op]);
+    }
+    // Test with comment at end of onload
+{% endblock onload %}
+
+{% block headerbody %}
+        <h1>Test Framework AJAX calls</h1>
+        {% if context.hasAdmin %}
+            <h2>Running as Site Admin</h2>
+        {% elseif context.hasUser and context.user.hasRole(constant('Config\\Framework::TESTCONTEXT'), 'Tester') %}
+            <h2>Running as Test Tester</h2>
+        {% endif %}
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="mx-auto col-md-10 mt-4 mb-5">
+            {% for x in ops %}
+                <div class="mb-3">
+                    <button class="btn btn-info" id="{{x}}">Test {{x}}</button>
+                </div>
+            {% endfor %}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

@@ -1,0 +1,65 @@
+{% set fwutils = TRUE %}
+{% set usejquery = FALSE %}
+{% set usebootbox = FALSE %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@util/formmacro.twig' as f %}
+
+{% block onload %}
+    document.getElementById('more').addEventListener('click', function(e){
+        fwdom.stop(e);
+        const mrow = $('#mrow');
+        mrow.before($('#example').clone());
+        const pr = $mrow.prev();
+        pr.querySelectorAll('input').forEach(function(inp){
+            inp.value = '';
+        });
+        pr.querySelectorAll('option').forEach(function(opt){
+            opt.selected = false;
+        });
+        fwdom.on('.delb', 'click', function(e){
+            framework.dodelbean(e, this, '{{constant('Config\\Framework::ROLE')}}');
+        }, pr);
+    });
+{% endblock onload %}
+
+{% block headerbody %}
+    <h1>Config Item "{{bean.name}}"</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="offset-md-1 col">
+            {% include '@util/message.twig' %}
+            <form action="#" method="post" id="uform" data-parsley-validate>
+                {{f.hidden({name: 'bean', value: bean.id})}}
+                {{bean.guard|raw}}
+                <fieldset>
+                    <legend>Details</legend>
+                    {{f.text({ label: 'Value', id: 'vl', name: 'value', value: bean.value})}}
+                    {{f.text({ label: 'Integrity', id: 'it', name: 'integrity', value: bean.integrity, help: 'The hashcode value for the integrity attribute for URLs'})}}
+                    {{f.text({ label: 'CrossOrigin', id: 'co', name: 'crossorigin', value: bean.crossorigin, help:'Valid values are <i>anonymous</i> or <i>use-credentials</i>'})}}
+                    {{f.checkbox({group: TRUE, names: ['defer'], values:[1], check: [bean.defer], labels: ['Defer']})}}
+                    {{f.checkbox({group: TRUE, names: ['async'], values:[1], check: [bean.async], labels: ['Async']})}}
+                    {{f.select({label : 'Type', name: 'type', required: TRUE, selected: bean.type,
+                        options: [
+                            { value: '',  text: '&mdash; Pick a Type &mdash;' },
+                            { value: 'boolean', text: 'boolean' },
+                            { value: 'css', text: 'css' },
+                            { value: 'integer', text: 'integer' },
+                            { value: 'js', text: 'js' },
+                            { value: 'string', text: 'string' },
+                            { value: 'json', text: 'json' },
+                            { value: 'xml', text: 'xml' },
+                        ]
+                    })}}
+                </fieldset>
+                <button class="btn btn-primary btn-lg" type="submit">Save</button>
+            </form>
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

@@ -1,0 +1,83 @@
+{% set fwutils = TRUE %}
+{% set validate = TRUE %}
+{% set usebootbox = FALSE %}
+
+{% extends '@content/page.twig' %}
+
+{% import '@content/iconmacro.twig' as icon %}
+{% import '@util/formmacro.twig' as f %}
+
+{% block onload %}
+    document.getElementById('more').addEventListener('click', function(e){
+        framework.addMore(e);
+    });
+    document.querySelectorAll('#uform')[0].addEventListener('submit', function(e){
+        return fwdom.mkjQ(this).parsley().validate()
+    });
+    for (var node of document.querySelectorAll('.delb'))
+    {
+        node.addEventListener('click', function(e){
+            framework.dodelbean(e, this, '{{constant('Config\\Framework::PAGEROLE')}}');
+        });
+    }
+{% endblock onload %}
+
+{% block headerbody %}
+    <h1>Page &ldquo;{{bean.name}}&rdquo;</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="mx-auto col">
+            {% include '@util/message.twig' %}
+            {{f.startform({method: 'post', id: 'uform'})}}
+                {{f.hidden({name: 'bean', value: bean.id})}}
+                {{bean.guard|raw}}
+                <fieldset>
+                    <legend>Page Name</legend>
+                    {{f.text({ label: 'Name', id: 'ln', name: 'name', value: bean.name, required: TRUE})}}
+                </fieldset>
+                <fieldset>
+                    <legend>Page Type</legend>
+                    <div class="form-group">
+                        {{f.select({id: 'npkind', label : 'Kind', name: 'kind', required: TRUE, selected: bean.kind,
+                            options: [
+                                {value: '', text: '&mdash; Pick a Type &mdash;'},
+                                {value: 1,  text: 'Object'},
+                                {value: 2,  text: 'Template'},
+                                {value: 4,  text: 'In-site 301'},
+                                {value: 6,  text: 'External 301'},
+                                {value: 3,  text: 'In-site 302'},
+                                {value: 5,  text: 'External 302'},
+                                {value: 7,  text: 'In-site 303'},
+                                {value: 8,  text: 'External 303'},
+                                {value: 9,  text: 'In-site 307'},
+                                {value: 10,  text: 'External 307'},
+                                {value: 11,  text: 'Internal 308'},
+                                {value: 12,  text: 'External 308'},
+                            ]
+                        })}}
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <legend>Page Properties</legend>
+                    {{f.text({ label: 'Parameters', id: 'pm', name: 'params', value: bean.params, ph: 'Not in use currently', disabled: TRUE})}}
+                    {{f.text({ label: 'Source', id: 'npsrc', name: 'source', value: bean.source, ph: 'page.twig="page, class name, /local/redirection or URL', required: TRUE})}}
+                    {{f.checkbox({labels: ['Active', 'Mobile Only', 'Must Login'], ids : ['npactive', 'npmobile', 'nplogin'],
+                        names: ['active', 'mobileonly', 'needlogin'], values: [1, 1, 1], inline: TRUE, check: [bean.active, bean.mobileonly, bean.needlogin]})}}
+                </fieldset>
+                <fieldset>
+                    <legend>Page Functional Requirements</legend>
+                    {{f.checkbox({labels: ['Uses AJAX', 'Uses Framework Utility JS', 'Uses Parsley', 'Uses Inline Editable'],
+                        ids : ['npajax', 'npfwutils', 'npparsley', 'npeditable'], inline: TRUE, names: ['needajax', 'needfwutils', 'needfwdom', 'needvalidate', 'neededitable'],
+                        values: [1, 1, 1, 1], check: [bean.needajax, bean.needfwutils, bean.needparsley, bean.neededitable]})}}
+                </fieldset>
+                {% include '@admin/roleselect.twig' with {bean : bean } %}
+                <button class="btn btn-primary btn-lg" type="submit">Save</button>
+            {{f.endform()}}
+        </article>
+    </section>
+{% endblock main %}
+
+{% block pagefooter %}
+{% endblock pagefooter %}

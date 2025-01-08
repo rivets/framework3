@@ -1,0 +1,150 @@
+{#
+    There several variables you can set at the top of a Twig to control some of the things
+    that the Framework includes in the output. Look at twigs/content/page.twig to see all
+    the possible variables and how they are used.
+#}
+
+{#
+    If your page uses the Framework JS util package include this line at the start of the file
+{% set fwutils = TRUE %}
+#}
+{#
+    If your page uses form validation include this line at the start of the file
+{% set validate = TRUE %}
+#}
+{#
+    If your page uses the inline editable package include this line at the start of the file
+{% set editable = TRUE %}
+#}
+
+
+{#
+    if you want to set the title of your  page that is displayed in browser tabs set this variable
+{% set title = 'My Page Title' %}
+#}
+
+{#
+   If you want a breadcrumb trail below the navbar set this
+{% set breadcrumbs = [{link:'url1', text: 'Top Level'}, {link: 'url2': text: 'Second level'}, {text: 'Where we are'}] %}
+#}
+
+{#
+   If you want a <meta> Keywords tag set this
+{% set keywords = 'Framework, PHP, RedBean' %}
+#}
+
+{#
+   If you want a <meta> Description tag set this
+{% set description = 'A PHP framework for building RESTful systems' %}
+#}
+
+{#
+   You can set a schema that describes the page with this variable - see http://schema.org for what values are available
+{% set schema = 'itemscope="" itemtype="http://schema.org/AboutPage"' %}
+#}
+
+{% extends '@content/page.twig' %}
+
+{# this brings in some useful macros for making forms
+{% import '@util/formmacro.twig' as f %}
+#}
+
+{# this brings in macros for accessing values in the config database
+{% import '@util/attrmacro.twig' as h %}
+#}
+
+{# this brings in some useful macros for making modals
+{% import '@util/modalmacro.twig' as m %}
+#}
+
+{# this brings in the icon macros
+{% import '@content/iconmacro.twig' as m %}
+#}
+
+{% block meta %}
+{# <meta> for things like keywords etc.#}
+{% endblock meta %}
+
+{% block links %}
+{# <link> for non-css and non-type things#}
+{% endblock links %}
+
+{% block type %}
+{# <link> for webfonts #}
+{% endblock type %}
+
+{% block css %}
+{# <link> for any other CSS files you need #}
+{% endblock css %}
+
+{# If you want some inline CSS then put it in this block - ***NB no <style> tag needed - it is better NOT to use this though!!
+{% block style %}
+{% endblock style %}
+#}
+
+{# If you want to add critical CSS then put it in this block - ***NB no <style> tag needed
+{% block criticalCSS %}
+{% endblock criticalCSS %}
+#}
+
+{% block scripts %}
+{# <script src=""></script> for any other JS files you need #}
+{% endblock scripts %}
+
+{% block setup %}
+{# Any javascript you need that is NOT run on load goes in this block. ***NB you don't need <script></script> tags here*** #}
+{% endblock setup %}
+
+{% block onload %}
+{# Any javascript you need that MUST run on load goes in this block. ***NB you don't need <script></script> tags here*** #}
+{% endblock onload %}
+
+{# uncomment this if you don't want the default navbar to appear
+{% block navigation %}
+{% endblock navigation %}
+#}
+
+{#
+    Edit the file navbar.twig to change the appearance of the
+    navigation bar. It is included by default from page.twig
+#}
+
+{# uncomment this and delete the headerbody block below to remove the <header> tag altogether
+{% block pageheader %}
+{% endblock pageheader %}
+#}
+
+{#
+    If you have a standard header for all (most) pages then put the
+    content in the file twigs/surround/header.twig. It is included by page.twig by
+    default. You then don't need to have a header block either.
+#}
+
+{% block headerbody %}
+    <h1 class="text-center">{{action}}</h1>
+{% endblock headerbody %}
+
+{% block main %}
+    <section class="row">
+        <article class="mx-auto col">
+            <p class="text-center">Coming Soon</p>
+        </article>
+    </section>
+{% endblock main %}
+
+{# uncomment this and delete the footer block below to remove the <footer> tag altogether
+{% block pagefooter %}
+{% endblock pagefooter %}
+#}
+
+{#
+    If you have a standard footer for all (most) pages then put the
+    content in the file twigs/surround/footer.twig. It is included by page.twig by
+    default. You then don't need to have a footer block either.
+#}
+
+{% block footer %}
+    <article class="col-md-12">
+        <p class="text-center">Footer</p>
+    </article>
+{% endblock footer %}

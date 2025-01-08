@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor>
+  <parser>
+    <default-package-name>the-framework2</default-package-name>
+    <target>../api</target>
+  </parser>
+  <transformer>
+    <target>../api</target>
+  </transformer>
+  <files>
+    <file>ajax.php</file>
+    <file>index.php</file>
+    <directory>class/*</directory>
+    <ignore>devel/*</ignore>
+    <ignore>tests/*</ignore>
+    <ignore>vendor/*</ignore>
+    <ignore>twigs/*</ignore>
+    <ignore>install/*</ignore>
+    <ignore>assets/*</ignore>
+    <ignore>install.php</ignore>
+  </files>
+    <plugins>
+        <plugin path="Core" />
+    </plugins>
+    <transformations>
+        <template name="clean" />
+    </transformations>
+</phpdocumentor>
