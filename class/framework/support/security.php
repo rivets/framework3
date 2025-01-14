@@ -3,14 +3,14 @@
  * Contains definition of the Security class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2024 Newcastle University
+ * @copyright 2012-20254 Newcastle University
  * @package Framework
  * @subpackage Web
  */
     namespace Framework\Support;
 
     use \RobThree\Auth\TwoFactorAuth;
-    use RobThree\Auth\Providers\Qr\EndroidQrCodeProvider;
+    use \RobThree\Auth\Providers\Qr\EndroidQrCodeProvider;
     use \Support\Context;
 /**
  * A class that handles provides various security related functions.
