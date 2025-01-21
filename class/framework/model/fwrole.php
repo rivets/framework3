@@ -42,7 +42,7 @@
  */
         private function checkstart(?string $start) : string
         {
-            return \isNull($start) || $start === '' || \strtolower($start) === 'now' ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
+            return \is_null($start) || $start === '' || \strtolower($start) === 'now' ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
         }
 /**
  * Fixes up end values
@@ -51,7 +51,7 @@
  */
         private function checkend(?string $end) : ?string
         {
-            return \isNull($end) || $end === '' || \strtolower($end) === 'never' ? NULL : Context::getinstance()->utcdate($end);
+            return \is_null($end) || $end === '' || \strtolower($end) === 'never' ? NULL : Context::getinstance()->utcdate($end);
         }
 /**
  * Update - called by RedBean when a rolename bean is stored
