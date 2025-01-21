@@ -40,18 +40,18 @@
  *
  * @param string   $start  The start date
  */
-        private function checkstart(string $start) : string
+        private function checkstart(?string $start) : string
         {
-            return $start === '' || \strtolower($start) === 'now' ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
+            return \isNull($start) || $start === '' || \strtolower($start) === 'now' ? Context::getinstance()->utcnow() : Context::getinstance()->utcdate($start);
         }
 /**
  * Fixes up end values
  *
  * @param string   $end  The end date
  */
-        private function checkend(string $end) : ?string
+        private function checkend(?string $end) : ?string
         {
-            return $end === '' || \strtolower($end) === 'never' ? NULL : Context::getinstance()->utcdate($end);
+            return \isNull($end) || $end === '' || \strtolower($end) === 'never' ? NULL : Context::getinstance()->utcdate($end);
         }
 /**
  * Update - called by RedBean when a rolename bean is stored
