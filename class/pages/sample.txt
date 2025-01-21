@@ -22,7 +22,7 @@
  *
  * @return string|array     A template name or an array with more complex information
  */
-        public function handle(Context $context)
+        public function handle(Context $context) : array|string
         {
             return '@content/sample.twig';
         }
