@@ -29,7 +29,7 @@
  * @param mixed[]    $other    From, cc, bcc etc. etc.
  * @param string[]   $attach   Any Attachments
  */
-        public function sendmail(array $to, string $subject, string $msg, string $alt = '', array $other = [], array $attach = []) : string
+        public function sendmail(array $to, string $subject, string $msg, string $alt = '', array $other = [], array $attach = []) : ?string
         {
             $mail = NULL;
             /** @psalm-suppress RedundantCondition */
