@@ -3,7 +3,7 @@
  * Contains the definition of the Formdata Base class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2021 Newcastle University
+ * @copyright 2020-2025 Newcastle University
  * @package Framework
  * @subpackage FormData
  */
@@ -31,7 +31,7 @@
  * @param array|int     $options  Filter options
  * @param bool          $isArray  Expect an array ratherthan a simple value
  */
-        public function mustFetch($name, $filter = NULL, array|int $options = 0, bool $isArray = FALSE) : array|string
+        public function mustFetch(array|string $name, ?int $filter = NULL, array|int $options = 0, bool $isArray = FALSE) : array|string
         {
             return $this->getValue($name, NULL, TRUE, $isArray, $filter, $options)[1];
         }
@@ -46,7 +46,7 @@
  * @param array|int     $options  Filter options
  * @param bool          $isArray  If TRUE then expect an array rather than a simple value
  */
-        public function fetch($name, $default = '', ?int $filter = NULL, array|int $options = 0, bool $isArray = FALSE) : array|string|int|float|bool
+        public function fetch(array|string $name, $default = '', ?int $filter = NULL, array|int $options = 0, bool $isArray = FALSE) : array|string|int|float|bool
         {
             return $this->getValue($name, $default, FALSE, $isArray, $filter, $options)[1];
         }
@@ -59,7 +59,7 @@
  * @param string   $bean        The bean type
  * @param bool     $forupdate   If TRUE then load for update
  */
-        public function mustFetchBean($name, $bean, $forupdate = FALSE) : \RedBeanPHP\OODBBean
+        public function mustFetchBean(array|string $name, string $bean, bool $forupdate = FALSE) : \RedBeanPHP\OODBBean
         {
             return Context::getinstance()->load($bean, $this->getValue($name, NULL, TRUE, FALSE, \FILTER_VALIDATE_INT)[1], $forupdate);
         }
@@ -70,7 +70,7 @@
  *
  * @throws BadValue
  */
-        public function mustFetchArray($name) : \ArrayIterator
+        public function mustFetchArray(array|string $name) : \ArrayIterator
         {
             return new \ArrayIterator($this->getValue($name, NULL, TRUE, TRUE)[1]);
         }
@@ -80,7 +80,7 @@
  * @param mixed        $name    The key
  * @param array<mixed> $default    Returned if the key does not exist
  */
-        public function fetchArray($name, array $default = []) : \ArrayIterator
+        public function fetchArray(array|string $name, array $default = []) : \ArrayIterator
         {
             return new \ArrayIterator($this->getValue($name, $default, FALSE, TRUE)[1]);
         }
