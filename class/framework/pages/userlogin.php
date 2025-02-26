@@ -27,9 +27,10 @@
  *
  * @param $lg   A username or email address
  */
-        public static function eorl(string $lg) : ?\RedBeanPHP\OODBBean
+        public static function eorl(string $lg, bool $active = TRUE) : ?\RedBeanPHP\OODBBean
         {
-            return R::findOne(FW::USER, (\filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?', [$lg]);
+            $act = $active ? ' and active = 1' : '';
+            return R::findOne(FW::USER, (\filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?'.$act, [$lg]);
         }
 /**
  * Make a confirmation code and store it in the database
@@ -228,7 +229,7 @@
                     return '@users/resend.twig';
                 }
                 // now handle the form
-                $user = self::eorl($lg);
+                $user = self::eorl($lg, TRUE);
                 if (!\is_object($user))
                 {
                     $local->message(Local::ERROR, 'Sorry, there is no user with that name or email address.');
@@ -285,8 +286,8 @@
                 $lg = $fdt->fetch('eorl', '');
                 if ($lg !== '')
                 {
-                    $user = self::eorl($lg);
-                    if (is_object($user))
+                    $user = self::eorl($lg, TRUE);
+                    if (\is_object($user))
                     {
                         $this->sendreset($context, $user);
                         $local->message(Local::MESSAGE, 'A password reset link has been sent to your email address.');
@@ -304,7 +305,7 @@
                 $user = $fdt->mustFetchBean('uid', FW::USER);
                 $code = $fdt->mustFetch('code');
                 $xc = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$code, 'P']);
-                if (is_object($xc) && $xc->{FW::USER}->equals($user))
+                if (\is_object($xc) && $xc->{FW::USER}->equals($user))
                 {
                     $interval = (new \DateTime($context->utcnow()))->diff(new \DateTime($xc->issued));
                     if ($interval->days <= 1)
