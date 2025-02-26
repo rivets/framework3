@@ -21,7 +21,7 @@
         <article class="mx-auto col-md-10 col-lg-8">
             {% include '@util/message.twig' %}
             {{f.startform({id: 'cform', method: 'post'})}}
-                {{f.email({label: 'Email', id: 'em', name: 'emal', ph: 'Email', value: context.user.email})}}
+                {{f.email({label: 'Email', id: 'em', name: 'ema1l', ph: 'Email', value: context.user.email})}}
                 {{f.password({label: 'New Password', id: 'np', name: 'pw', ph: '***********'})}}
                 {{f.password({label: 'Repeat Password', id: 'rnp', name: 'rpw', ph: '***********', valid: {'equalto': '#np', 'trigger': 'blur'}})}}
                 {{f.submit({value: 'Update'})}}

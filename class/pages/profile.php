@@ -3,7 +3,7 @@
  * Profile page class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2021-2022 Newcastle University
+ * @copyright 2021-2025 Newcastle University
  * @package Framework
  * @subpackage UserPages
  */
@@ -26,7 +26,7 @@
             {
                 $fdt = $context->formdata('post');
                 $user = $context->user();
-                $email = $fdt->fetch('email', '');
+                $email = $fdt->mustFetch('email');
                 $change = FALSE;
                 if ($email !== '' && $email != $user->email)
                 {
@@ -40,13 +40,13 @@
                         $context->local()->message(\Framework\Local::ERROR, 'Please enter a valid email address');
                     }
                 }
-                $pw = $fdt->fetch('password', '');
-                $rpw = $fdt->fetch('repeat', '');
+                $pw = $fdt->fetch('pw', '');
+                $rpw = $fdt->fetch('rpw', '');
                 if ($pw !== '')
                 {
                     if ($pw == $rpw)
                     {
-                        $user->setpw($pw);
+                        $user->setPW($pw);
                         $change = TRUE;
                     }
                     else
