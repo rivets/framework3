@@ -406,8 +406,10 @@
  * Use deletebean to ask user and possibly delete a bean.
  * Provides a yes function and gets the id value.
  *
- * This function assumes that the delete button is embedded in a td inside a tr and
- * that the whole tr is to be removed from the screen.
+ * This function assumes that the delete button is embedded in a dom object
+ * and that object has to be removed. The deafult is to look for one that
+ * has a data-id attribute as that is the most commonly used case in the framework
+ * but any search can be used. Be careful.
  *
  * @see dotoggle above for info about data-id usage
  *
@@ -415,17 +417,19 @@
  * @param {object} x - a dom object
  * @param {string} bean - a RedBean bean name
  * @param {string} msg - included in part of the "do you want to delete" prompt
+ * @param {?function? success - call this on succesful deletion
+ * @param {string} rmv - look for this dom object to be faded away
  *
  * @return {void}
  */
-        dodelbean: function(e, x, bean, msg = '', success = null)
+        dodelbean: function(e, x, bean, msg = '', success = null, rmv = '[data-id]')
         {
             let pnode = x.closest('[data-id]');
             if (typeof jQuery != 'undefined' && pnode instanceof jQuery)
             {
                 pnode = pnode[0];
             }
-            framework.deletebean(e, x, bean, pnode.getAttribute('data-id'), function(){ framework.fadetodel(pnode, success);}, msg);
+            framework.deletebean(e, x, bean, pnode.getAttribute('data-id'), function(){ framework.fadetodel(x.closest(rmv), success);}, msg);
         },
 /**
  * When a container detects a click call this. Expects there to be an
