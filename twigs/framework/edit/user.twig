@@ -18,7 +18,7 @@
             framework.dodelbean(e, this, '{{constant('Config\\Framework::ROLE')}}');
         }, pr);
     });
-    fwdom.on(''#uform', 'submit', function(e){
+    fwdom.on('#uform', 'submit', function(e){
         return $(this).parsley().validate();
     });
     fwdom.on('.delb', 'click', function(e){
