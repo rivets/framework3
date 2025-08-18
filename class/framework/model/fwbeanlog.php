@@ -20,7 +20,7 @@
         public function operation() : string
         {
             /** @phpstan-ignore-next-line */
-            return BL::label($this->bean->op);
+            return BL::from($this->bean->op)->label();
         }
 /**
  * Return the updated field
