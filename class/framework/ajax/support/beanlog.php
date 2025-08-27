@@ -26,7 +26,7 @@
  * @param $field       The field being changed
  * @param mixed $value The value used in the change
  */
-        public static function mklog(Context $context, int $op, \RedBeanPHP\OODBBean $bean, string $field, $value) : void
+        public static function mklog(Context $context, int $op, \RedBeanPHP\OODBBean $bean, string $field, $value) : \RedBeanPHP\OODBBean
         {
             $lg = \R::dispense(FW::BEANLOG);
             $lg->user = $context->user();       // who changed it
@@ -36,7 +36,7 @@
             $lg->bid = $bean->getID();          // the bean id
             $lg->field = $field;                // the field changed
             $lg->value = (string) $value;       // the previous value
-            \R::store($lg);
+            return \R::store($lg);
         }
     }
 ?>
