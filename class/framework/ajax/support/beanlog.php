@@ -36,7 +36,8 @@
             $lg->bid = $bean->getID();          // the bean id
             $lg->field = $field;                // the field changed
             $lg->value = (string) $value;       // the previous value
-            return \R::store($lg);
+            \R::store($lg);
+	    return $lg;
         }
     }
 ?>
