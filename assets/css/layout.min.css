@@ -1,1 +1,2 @@
-body{font-family:sans-serif;background-color:#fff}.delb,.noconfirm{color:red}.actb,.admb,.editb,.delb,.devb,.reqb,.rdob,.disb{cursor:pointer}.fadis{color:#aaa}.notvalid{background-color:#ddd}.fader{opacity:1;-webkit-transition:opacity 1000ms linear;transition:opacity 1000ms linear;background-color:#ff0}.z-1k{z-index:1000}
+body{font-family:sans-serif;background-color:#fff}.delb,.noconfirm{color:red}.actb,.admb,.delb,.devb,.disb,.editb,.rdob,.reqb{cursor:pointer}.fadis{color:#aaa}.notvalid{background-color:#ddd}.fader{opacity:1;-webkit-transition:opacity 1000ms linear;transition:opacity 1000ms linear;background-color:#ff0}.z-1k{z-index:1000}
+/*# sourceMappingURL=layout.min.css.map */
