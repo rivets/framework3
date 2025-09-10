@@ -39,10 +39,10 @@
  *
  * @return bool
  */
-	public function hasRole(string $context, string $role) : bool
-	{
-	    return $this->hasUser() && \is_object($this->user()->hasRole($context, $role));
-	}
+        public function hasRole(string $context, string $role) : bool
+        {
+            return $this->hasUser() && \is_object($this->user()->hasRole($context, $role));
+        }
 /*
  ***************************************
  * Miscellaneous utility functions
