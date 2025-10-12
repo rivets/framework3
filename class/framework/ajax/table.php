@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX table operation
  *
  * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
- * @copyright 2020-2024 Newcastle University
+ * @copyright 2020-2025 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -42,7 +42,7 @@
             {
                 throw new Forbidden('Table exists');
             }
-            if (!preg_match('/[a-z][a-z0-9]*/', $table))
+            if (!\preg_match('/[a-z][a-z0-9]*/', $table))
             {
                 throw new BadValue('Table name should be alphanumeric');
             }
@@ -51,7 +51,7 @@
             foreach ($fdt->fetchArray('field') as $ix => $fname)
             {
                 $fname = strtolower($fname);
-                if (preg_match('/[a-z][a-z0-9]*/', $fname))
+                if (\preg_match('/[a-z][a-z0-9]*/', $fname))
                 {
                     $bn->$fname = $fdt->fetch(['sample', $ix], '');
                 }

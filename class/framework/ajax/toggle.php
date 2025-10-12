@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX toggle operation
  *
  * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
- * @copyright 2020-2024 Newcastle University
+ * @copyright 2020-2025 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -39,7 +39,7 @@
             [$type, $bid, $field] = $this->restCheck(3);
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $type, $field);
             $bn = $this->context->load($type, (int) $bid);
-            if ($type === FW::USER && ctype_upper($field[0]) && $this->context->hasadmin())
+            if ($type === FW::USER && \ctype_upper($field[0]) && $this->context->hasadmin())
             { // not simple toggling... and can only be done by the Site Administrator
                 if (is_object($bn->hasrole(FW::FWCONTEXT, $field)))
                 {

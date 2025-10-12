@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX shared operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2021 Newcastle University
+ * @copyright 2020-2025 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -42,12 +42,12 @@
             switch ($this->context->web()->method())
             {
             case 'POST': // make a new share /ajax/shared/KIND1/id1/KIND2/id2
-                $bn1->noload()->{'shared'.ucfirst($b2).'List'}[] = $bn2;
+                $bn1->noload()->{'shared'.\ucfirst($b2).'List'}[] = $bn2;
                 \R::store($bn1);
                 break;
 
             case 'DELETE': // /ajax/shared/KIND1/id1/KIND2/id2
-                unset($bn1->{'shared'.ucfirst($b2).'List'}[$bn2->getID()]);
+                \unset($bn1->{'shared'.\ucfirst($b2).'List'}[$bn2->getID()]);
                 \R::store($bn1);
                 break;
 //            case 'PUT':

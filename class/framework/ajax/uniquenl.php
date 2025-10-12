@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX uniquenl operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2024 Newcastle University
+ * @copyright 2020-2025 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -37,7 +37,7 @@
         {
             [$bean, $field, $value] = $this->restCheck(3);
             $this->checkAccess($this->context->user(), $this->controller->permissions(static::class, self::$permissions), $bean, $field);
-            if (\R::count($bean, preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
+            if (\R::count($bean, \preg_replace('/[^a-z0-9_]/i', '', $field).'=?', [$value]) > 0)
             {
                 $this->context->web()->notFound(); // error if it exists....
                 /* NOT REACHED */

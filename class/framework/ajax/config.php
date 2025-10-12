@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX config operation
  *
  * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
- * @copyright 2020-2024 Newcastle University
+ * @copyright 2020-2025 Newcastle University
  * @package Framework\Framework\Ajax
  */
     namespace Framework\Ajax;
@@ -35,7 +35,7 @@
  */
         private function post(?\RedBeanPHP\OODBBean $v, string $name) : void
         {
-            if (is_object($v))
+            if (\is_object($v))
             {
                 throw new BadValue('Item already exists');
             }
@@ -55,7 +55,7 @@
  */
         private function patch(?\RedBeanPHP\OODBBean $v) : void
         {
-            if (!is_object($v))
+            if (!\is_object($v))
             {
                 throw new BadValue('No such item');
             }
@@ -90,7 +90,7 @@
  */
         private function delete(?\RedBeanPHP\OODBBean $v) : void
         {
-            if (!is_object($v))
+            if (!\is_object($v))
             {
                 throw new BadValue('No such item');
             }
@@ -107,7 +107,7 @@
  */
         private function get(?\RedBeanPHP\OODBBean $v) : void
         {
-            if (!is_object($v))
+            if (!\is_object($v))
             {
                 throw new BadValue('No such item');
             }

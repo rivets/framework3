@@ -3,7 +3,7 @@
  * Base class for AJax operations
  *
  * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
- * @copyright 2020-2024 Newcastle University
+ * @copyright 2020-2025 Newcastle University
  * @package Framework\Framework\Ajax
  */
     namespace Framework\Ajax;
@@ -64,7 +64,7 @@
                     foreach ($checks as $check)
                     {
                         $this->checkPerms($user, $check[0]); // check user plays the right roles
-                        if ($field === '' || empty($check[1]) || (\in_array($field, $check[1]) && ($field != 'id' || $idOK)))
+                        if ($field === '' || \empty($check[1]) || (\in_array($field, $check[1]) && ($field != 'id' || $idOK)))
                         {
                             return;
                         }
@@ -81,7 +81,7 @@
  */
         private function checkPerms(?\RedBeanPHP\OODBBean $user, array $pairs) : void
         {
-            if (!empty($pairs) && $user === NULL)
+            if (!\empty($pairs) && $user === NULL)
             { // you can't have permissions without a user
                 throw new Forbidden('Permission denied');
             }

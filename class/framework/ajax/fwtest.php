@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX hints operation
  *
  * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
- * @copyright 2020-2024 Newcastle University
+ * @copyright 2020-2025 Newcastle University
  * @package Framework\Framework\Ajax
  */
     namespace Framework\Ajax;
@@ -41,7 +41,7 @@
  */
         final public function handle() : void
         {
-            $method = strtolower($this->context->web()->method());
+            $method = \strtolower($this->context->web()->method());
             $res = (object) [
                 'rest' => $this->context->rest(),
                 'method' => $method,

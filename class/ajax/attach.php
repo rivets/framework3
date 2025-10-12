@@ -32,6 +32,7 @@
  * is a boolean indicating whether or not login is required, the second element is a list of ['Context', 'Role']
  * pairs that the user must have.
  */
+//        #[\Override]
 //        public function requires() : array
 //        {
 //            return [TRUE, []];

@@ -3,7 +3,7 @@
  * Class to handle the Framework AJAX upload operation
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2021-2024 Newcastle University
+ * @copyright 2021-2025 Newcastle University
  * @package Framework
  * @subpackage SystemAjax
  */
@@ -19,7 +19,7 @@
  * @var array<mixed>
  * @phpcsSuppress SlevomatCodingStandard.Classes.UnusedPrivateElements
  */
-        private static $permissions = [];
+        private static array $permissions = [];
 /**
  * Upload files and optionally attch them to a set of beans
  *
@@ -39,7 +39,7 @@
             if (\count($rest) > 1)
             { // there are beans to attach too.
                 $ix = 1;
-                while (isset($rest[$ix]))
+                while (\isset($rest[$ix]))
                 {
                     $beanType = $rest[$ix];
                     if (FW::isFWTable($beanType))
@@ -48,7 +48,7 @@
                     }
                     $stable[] = $beanType < FW::UPLOAD ? $beanType.'_'.FW::UPLOAD : FW::UPLOAD.'_'.$beanType;
                     $ix += 1;
-                    if (!isset($rest[$ix]))
+                    if (!\isset($rest[$ix]))
                     {
                         throw new \Framework\Exception\ParameterCount('Missing field');
                     }

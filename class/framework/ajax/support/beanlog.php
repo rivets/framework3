@@ -37,7 +37,7 @@
             $lg->field = $field;                // the field changed
             $lg->value = (string) $value;       // the previous value
             \R::store($lg);
-	    return $lg;
+            return $lg;
         }
     }
 ?>

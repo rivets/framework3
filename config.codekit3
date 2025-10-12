@@ -7,7 +7,7 @@
       "uuidString" : "B19A59DC-7031-433F-A596-4C22DEF6012D"
     }
   ],
-  "creatorBuild" : "34627",
+  "creatorBuild" : "34892",
   "files" : {
     "\/.gitattributes" : {
       "cB" : 0,
@@ -37,7 +37,7 @@
       "ci" : 0,
       "co" : 1,
       "ft" : 16,
-      "ma" : 0,
+      "ma" : 1,
       "oA" : 0,
       "oAP" : "\/assets\/css\/fw-editable.min.css",
       "oF" : 2,
@@ -307,6 +307,18 @@
       "oS" : 3,
       "pg" : 0
     },
+    "\/assets\/scss\/msgpage.css" : {
+      "aP" : 1,
+      "bl" : 0,
+      "ci" : 0,
+      "co" : 0,
+      "ft" : 16,
+      "ma" : 0,
+      "oA" : 0,
+      "oAP" : "\/assets\/scss\/msgpage-min.css",
+      "oF" : 0,
+      "pg" : 0
+    },
     "\/assets\/scss\/msgpage.scss" : {
       "aP" : 0,
       "bl" : 0,
@@ -452,7 +464,7 @@
   },
   "projectAttributes" : {
     "creationDate" : 540395581,
-    "displayValue" : "framework2",
+    "displayValue" : "Framework3",
     "displayValueWasSetByUser" : 1,
     "iconImageName" : "meme-cryingJordan",
     "iconImageWasSetByUser" : 0
@@ -753,8 +765,6 @@
     "buildFolderActive" : 0,
     "buildFolderName" : "build",
     "cleanBuild" : 1,
-    "cssoForceMediaMerge" : 0,
-    "cssoRestructure" : 1,
     "environmentVariableEntries" : [
       "NODE_ENV:::production"
     ],
@@ -1391,6 +1401,9 @@
         "active" : 0,
         "optionString" : "{'skipBlankLines': false, 'ignoreComments': false}"
       },
+      "no-unassigned-vars" : {
+        "active" : 0
+      },
       "no-undef" : {
         "active" : 1,
         "optionString" : "{'typeof': false}"
@@ -1471,7 +1484,8 @@
         "active" : 0
       },
       "no-useless-escape" : {
-        "active" : 0
+        "active" : 0,
+        "optionString" : "{'allowRegexCharacters': []}"
       },
       "no-useless-rename" : {
         "active" : 0,
