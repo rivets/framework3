@@ -3,7 +3,7 @@
  * Contains the definition of the Dispatch class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2017-2024 Newcastle University
+ * @copyright 2017-2025 Newcastle University
  * @package Framework\Framework
  */
     namespace Framework;
@@ -163,7 +163,7 @@
             { // You catch DB errors from pages that are not active or don't explicitly exist.
                 $page = NULL;
             }
-            if (!is_object($page))
+            if (!\is_object($page))
             { // No such page or it is marked as inactive so pass it to NoPage to handle it
                $page = new \stdClass();
                $page->kind = self::OBJECT;
@@ -216,7 +216,7 @@
                 break;
 
             default:
-                if (!isset(self::$actions[$page->kind]))
+                if (!\isset(self::$actions[$page->kind]))
                 { // check value is OK
                     $context->web()->internal('Bad page kind');
                     /* NOT REACHED */
