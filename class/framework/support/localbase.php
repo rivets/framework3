@@ -3,7 +3,7 @@
  * Contains definition of LocalBase class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-2021 Newcastle University
+ * @copyright 2012-2025 Newcastle University
  * @package Framework
  */
     namespace Framework\Support;
@@ -149,7 +149,7 @@
  */
         public function debase(string $url) : string
         {
-            return $this->base() !== '' ? \preg_replace('#^'.$this->base().'#', '', $url) : $url;
+            return $this->base() !== '' ? \preg_replace('#^'.$this->base().'#i', '', $url) : $url;
         }
 /**
  * Check to see if non-admin users are being excluded
