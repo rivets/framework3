@@ -3,7 +3,7 @@
  * This contains the code to initialise the framework from the web
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2014-2022 Newcastle University
+ * @copyright 2014-2025 Newcastle University
  */
     use Config\Framework as FW;
     use \Framework\Dispatch;
@@ -91,7 +91,7 @@
     {
         if ($error = \error_get_last())
         { // are we terminating with an error?
-            if (isset($error['type']) && ($error['type'] === \E_ERROR || $error['type'] === \E_PARSE || $error['type'] === \E_COMPILE_ERROR))
+            if (\isset($error['type']) && ($error['type'] === \E_ERROR || $error['type'] === \E_PARSE || $error['type'] === \E_COMPILE_ERROR))
             { // tell the developers about this
                 echo '<h2>There has been an installer system error &ndash; '.$error['type'].'</h2>';
             }
@@ -118,7 +118,7 @@
         \ob_start();
         \debug_print_backtrace(1, 2);
         $back = \ob_get_clean(); // will get used later in make500
-        echo \str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', \str_replace(PHP_EOL, '<br/>'.PHP_EOL, \htmlentities($back))).'</pre>';
+        echo \str_replace(',[', ',<br/>&nbsp;&nbsp;&nbsp;&nbsp;[', \str_replace(\PHP_EOL, '<br/>'.\PHP_EOL, \htmlentities($back))).'</pre>';
         cleanup();
         exit;
     }
@@ -173,7 +173,7 @@
         \R::store($role);
         $role->end = NULL; // clear end date as we don't want to time limit admin
         \R::store($role);
-        $xown = 'xown'.ucfirst($type).'List';
+        $xown = 'xown'.\ucfirst($type).'List';
         $owner->{$xown}[] = $role;
         $cname->{$xown}[] = $role;
         $rname->{$xown}[] = $role;
@@ -199,7 +199,7 @@
         return $bl ? 'TRUE' : 'FALSE';
     }
 
-    $verbose = isset($_GET['verbose']);
+    $verbose = \isset($_GET['verbose']);
  /*
   * Set up all the system error handlers
   */
@@ -258,7 +258,7 @@
         $dn = $pp['dirname'];
         \array_unshift($bdr, $pp['basename']);
     }
-    if (empty($bdr))
+    if (\empty($bdr))
     {
         $dir = '';
         $name = 'framework';
