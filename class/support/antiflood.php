@@ -30,7 +30,7 @@
 // First delete any flooding data that has expired
 //
             \R::exec('delete from '.FW::FLOOD.' where ('.$now.' - calltime) > '.self::KEEPTIME);
-            $ip = \isset($_SERVER['HTTP_X_FORWARDED_FOR']) && \filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], \FILTER_VALIDATE_IP)
+            $ip = isset($_SERVER['HTTP_X_FORWARDED_FOR']) && \filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], \FILTER_VALIDATE_IP)
                 ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
             try
             {
