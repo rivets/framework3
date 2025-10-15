@@ -91,7 +91,7 @@
     {
         if ($error = \error_get_last())
         { // are we terminating with an error?
-            if (\isset($error['type']) && ($error['type'] === \E_ERROR || $error['type'] === \E_PARSE || $error['type'] === \E_COMPILE_ERROR))
+            if (isset($error['type']) && ($error['type'] === \E_ERROR || $error['type'] === \E_PARSE || $error['type'] === \E_COMPILE_ERROR))
             { // tell the developers about this
                 echo '<h2>There has been an installer system error &ndash; '.$error['type'].'</h2>';
             }
@@ -199,7 +199,7 @@
         return $bl ? 'TRUE' : 'FALSE';
     }
 
-    $verbose = \isset($_GET['verbose']);
+    $verbose = isset($_GET['verbose']);
  /*
   * Set up all the system error handlers
   */

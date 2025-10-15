@@ -216,7 +216,7 @@
                 break;
 
             default:
-                if (!\isset(self::$actions[$page->kind]))
+                if (!isset(self::$actions[$page->kind]))
                 { // check value is OK
                     $context->web()->internal('Bad page kind');
                     /* NOT REACHED */

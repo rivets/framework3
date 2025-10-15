@@ -39,7 +39,7 @@
             if (\count($rest) > 1)
             { // there are beans to attach too.
                 $ix = 1;
-                while (\isset($rest[$ix]))
+                while (isset($rest[$ix]))
                 {
                     $beanType = $rest[$ix];
                     if (FW::isFWTable($beanType))
@@ -48,7 +48,7 @@
                     }
                     $stable[] = $beanType < FW::UPLOAD ? $beanType.'_'.FW::UPLOAD : FW::UPLOAD.'_'.$beanType;
                     $ix += 1;
-                    if (!\isset($rest[$ix]))
+                    if (!isset($rest[$ix]))
                     {
                         throw new \Framework\Exception\ParameterCount('Missing field');
                     }
