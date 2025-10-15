@@ -3,7 +3,7 @@
  * Contains definition of ErrorHandler class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020 Newcastle University
+ * @copyright 2020-2025 Newcastle University
  * @package Framework
  * @subpackage SystemSupport
  */
@@ -173,7 +173,7 @@
                 }
                 else
                 {
-                    header(StatusCodes::httpHeaderFor(StatusCodes::HTTP_INTERNAL_SERVER_ERROR));
+                    \header(StatusCodes::httpHeaderFor(StatusCodes::HTTP_INTERNAL_SERVER_ERROR));
                 }
             }
         }
