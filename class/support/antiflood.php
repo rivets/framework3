@@ -4,7 +4,7 @@
  * many calls from a given IP address
  *
  * @author Lindsay Marshall <lindsay.marshall@newcastle.ac.uk>
- * @copyright 2020-2024 Newcastle University
+ * @copyright 2020-2025 Newcastle University
  * @package Framework\Support
  */
     namespace Support;
@@ -30,8 +30,17 @@
 // First delete any flooding data that has expired
 //
             \R::exec('delete from '.FW::FLOOD.' where ('.$now.' - calltime) > '.self::KEEPTIME);
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'];
-            $f = \R::findOne(FW::FLOOD, 'ip=?', [$ip]);
+            $ip = \isset($_SERVER['HTTP_X_FORWARDED_FOR']) && \filter_var($_SERVER['HTTP_X_FORWARDED_FOR'], \FILTER_VALIDATE_IP)
+                ? $_SERVER['HTTP_X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+            try
+            {
+                $f = \R::findOne(FW::FLOOD, 'ip=?', [$ip]);
+            }
+            catch (\Throwable)
+            { // weirdness
+                Context::getinstance()->web()->relocate(self::DIVERSION);
+                /* NOT REACHED */
+            }
             if (\is_object($f))
             {
                 $res =  ($now - $f->calltime) < $limit;
