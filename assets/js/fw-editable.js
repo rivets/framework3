@@ -14,7 +14,7 @@ var fweditable = {
 
     emptyText : '--------',
     
-    emptyTiny: /^<p><br[^>]*><\/p>$/, // the text returned by an empty Tiny MCE editor
+    emptyTiny: /^<p><br[^>]*><\/p>$/i, // the text returned by an empty Tiny MCE editor
 
     makeEdit: function(d)
     {
@@ -180,8 +180,8 @@ var fweditable = {
                 }
                 else
                 {
-                    box.value.replace(/<p>(<br[^>]*>)?<\/p>/i, ''); // get rid of spurious empty paragraphs.
-                    box.value.replace(/<br[^>*]><\/p>/i, '</p>'); // get rid of spurious breaks
+                    box.value.replace(/<br[^>]*><\/p>/i, '</p>'); // get rid of spurious trailing breaks
+                    box.value.replace(/<p><\/p>/i, ''); // get rid of spurious empty paragraphs.
                     box.value.replace(/&nbsp;\s+/i, ' '); // get rid of spurious non-breaking spaces followed by spaces
                     box.value.replace(/&nbsp;/i, ' '); // turn non-breaking spaces into spaces
                 }
