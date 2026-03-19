@@ -181,6 +181,8 @@ var fweditable = {
                 else
                 {
                     box.value.replace(/<br[^>*]><\/p>/i, '</p>'); // get rid of spurious breaks
+                    box.value.replace(/&nbsp;\s+/i, ' '); // get rid of spurious non-breaking spaces followed by spaces
+                    box.value.replace(/&nbsp;/i, ' '); // turn non-breaking spaces into spaces
                 }
             }
 
