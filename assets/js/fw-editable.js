@@ -180,10 +180,10 @@ var fweditable = {
                 }
                 else
                 {
-                    val = val.replace(/<br[^>]*><\/p>/i, '</p>'); // get rid of spurious trailing breaks
-                    val = val.replace(/<p><\/p>/i, ''); // get rid of spurious empty paragraphs.
-                    val = val.replace(/&nbsp;\s+/i, ' '); // get rid of spurious non-breaking spaces followed by spaces
-                    val = val.replace(/&nbsp;/i, ' '); // turn non-breaking spaces into spaces
+                    val = val.replace(/<br[^>]*><\/p>/ig, '</p>'); // get rid of spurious trailing breaks
+                    val = val.replace(/<p><\/p>/ig, ''); // get rid of spurious empty paragraphs.
+                    val = val.replace(/&nbsp;\s+/ig, ' '); // get rid of spurious non-breaking spaces followed by spaces
+                    val = val.replace(/&nbsp;/ig, ' '); // turn non-breaking spaces into spaces
                 }
                 box.value = val;
             }
