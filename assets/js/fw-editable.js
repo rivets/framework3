@@ -14,7 +14,7 @@ var fweditable = {
 
     emptyText : '--------',
     
-    emptyTiny: /<p><br[^>]*><\/p>/, // the text returned by an empty Tiny MCE editor
+    emptyTiny: /^<p><br[^>]*><\/p>$/, // the text returned by an empty Tiny MCE editor
 
     makeEdit: function(d)
     {
