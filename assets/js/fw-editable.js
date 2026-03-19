@@ -173,20 +173,19 @@ var fweditable = {
             let box = tip.querySelector('.edbox');
             if (fweditable.taid !== '')
             {
-                box.value = tinymce.activeEditor.getContent({format : 'raw'});
-                if (box.value.match(fweditable.emptyTiny))
+                let val = tinymce.activeEditor.getContent({format : 'raw'});
+                if (val.match(fweditable.emptyTiny))
                 {
-                    box.value = '';
+                    val = '';
                 }
                 else
                 {
-                    box.value.replace(/<br[^>]*><\/p>/i, '</p>'); // get rid of spurious trailing breaks
-                console.log(box.value)
-                    box.value.replace(/<p><\/p>/i, ''); // get rid of spurious empty paragraphs.
-                console.log(box.value)
-                    box.value.replace(/&nbsp;\s+/i, ' '); // get rid of spurious non-breaking spaces followed by spaces
-                    box.value.replace(/&nbsp;/i, ' '); // turn non-breaking spaces into spaces
+                    val.replace(/<br[^>]*><\/p>/i, '</p>'); // get rid of spurious trailing breaks
+                    val.replace(/<p><\/p>/i, ''); // get rid of spurious empty paragraphs.
+                    val.replace(/&nbsp;\s+/i, ' '); // get rid of spurious non-breaking spaces followed by spaces
+                    val.replace(/&nbsp;/i, ' '); // turn non-breaking spaces into spaces
                 }
+                box.value = val;
             }
 
             if (box.value != fweditable.inline.innerText)
