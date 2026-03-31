@@ -3,7 +3,7 @@
  * Contains definition of ErrorHandler class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2025 Newcastle University
+ * @copyright 2020-2026 Newcastle University
  * @package Framework
  * @subpackage SystemSupport
  */
@@ -55,13 +55,13 @@
             /** @psalm-suppress InvalidArgument - psalm doesnt have the right spec for this function */
             /** @psalm-suppress ArgumentTypeCoercion */
             \register_shutdown_function([$this, 'shutdown']); // @phan-suppress-current-line PhanUndeclaredMethodInCallable
-            if ($devel)
-            { // set up expectation handling if in developer mode
-                if (\ini_get('zend.assertions') != 1)
-                {
-                    \ini_set('zend.assertions', '1');
-                }
-            }
+//            if ($devel)
+//            { // set up expectation handling if in developer mode
+//              if (\ini_get('zend.assertions') != 1)
+//              {
+//                  \ini_set('zend.assertions', '1');
+//              }
+//          }
         }
 /**
  * Allow system to ignore errors

@@ -3,7 +3,7 @@
  * Contains the definition of the Formdata Base class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2020-2021 Newcastle University
+ * @copyright 2020-2026 Newcastle University
  * @package Framework
  * @subpackage FormData
  */
@@ -19,7 +19,7 @@
  * @var array The array that contains the relevant values.
  *            It is protected rather than private as some items do not have Superglobals and set this value to an array;
  */
-        protected array $super;
+        protected array $super = [];
 /**
  * Constructor
  *
@@ -31,10 +31,6 @@
             { // we have nominated a superglobal
                 $this->super = $this->getSuper($this->which);
             }
-            else
-            {
-                $this->super = [];
-            }
         }
 /*
  *******************************************************************
@@ -43,27 +39,19 @@
  */
 /**
  *  Return the relevant Superglobal
- *
- *  @TODO Change this to use match() when PHP 8 is released
  */
         protected function getSuper(?int $which = NULL) : array
         {
-            switch($which ?? $this->which)
+            return match ($which ?? $this->which)
             {
-            case \INPUT_GET:
-                return $_GET;
-            case \INPUT_POST:
-                return $_POST;
-            case \INPUT_COOKIE:
-                return $_COOKIE;
-            case \INPUT_SERVER:
-                return $_SERVER;
-            case \INPUT_ENV:
-                return $_ENV;
-            case NULL:
-                return $this->super;
-            }
-            throw new BadValue('Invalid Superglobal constant');
+                \INPUT_GET     => $_GET,
+                \INPUT_POST    => $_POST,
+                \INPUT_COOKIE  => $_COOKIE,
+                \INPUT_SERVER  => $_SERVER,
+                \INPUT_ENV     => $_ENV,
+                NULL           => $this->super,
+                default        => throw new BadValue('Invalid Superglobal constant')
+            };
         }
 /**
  * Look in the specified array for a key and see if it exists
@@ -176,9 +164,9 @@
                 }
                 return $default;
             }
-            if (!is_array($part))
+            if (!\is_array($part))
             { // don't try and trim an array!
-                $part = trim($part);
+                $part = \trim($part);
                 if (!empty($filter))
                 { // need to apply a filter to the value
                     $part = \filter_var($part, $filter, $options);
@@ -231,7 +219,7 @@
  */
         public function hasForm() : bool
         {
-            return count($this->super) > 0;
+            return \count($this->super) > 0;
         }
     }
 ?>

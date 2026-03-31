@@ -3,7 +3,7 @@
  * A class that contains code to support returnng info needed in various places on the site
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2016-2021 Newcastle University
+ * @copyright 2016-2026 Newcastle University
  * @package Framework
  * @subpackage SystemSupport
  */
@@ -45,7 +45,7 @@
             {
                  $where .= ' LIMIT '.$count.' OFFSET '.(($start - 1)*$count);
             }
-            R::getPDO()->setAttribute(\PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, FALSE);
+            R::getPDO()->setAttribute(\Pdo\Mysql::ATTR_USE_BUFFERED_QUERY, FALSE);
             $collection = R::findCollection($bean, $where, $params);
             /** @psalm-suppress InvalidMethodCall - not sure why psalm gives an error here */
             while ($item = $collection->next())

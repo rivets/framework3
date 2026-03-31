@@ -3,7 +3,7 @@
  * Contains definition of the Security class
  *
  * @author Lindsay Marshall <lindsay.marshall@ncl.ac.uk>
- * @copyright 2012-20254 Newcastle University
+ * @copyright 2012-2026 Newcastle University
  * @package Framework
  * @subpackage Web
  */
@@ -53,7 +53,6 @@
             { // there was an error of some kind.
                 $mime = '';
             }
-            \finfo_close($finfo);
             return $mime;
         }
 /**
