@@ -55,13 +55,6 @@
             /** @psalm-suppress InvalidArgument - psalm doesnt have the right spec for this function */
             /** @psalm-suppress ArgumentTypeCoercion */
             \register_shutdown_function([$this, 'shutdown']); // @phan-suppress-current-line PhanUndeclaredMethodInCallable
-//            if ($devel)
-//            { // set up expectation handling if in developer mode
-//              if (\ini_get('zend.assertions') != 1)
-//              {
-//                  \ini_set('zend.assertions', '1');
-//              }
-//          }
         }
 /**
  * Allow system to ignore errors
