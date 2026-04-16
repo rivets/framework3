@@ -50,6 +50,10 @@
         {
             $context = $this->context;
             $rest = $context->rest();
+            if (\count($rest) < 3)
+            {
+                throw new \Framework\Exception\BadValue(' missing parameter');
+            }
             $type = \strtolower($rest[1]);
             $bean = $context->load($type, (int) $rest[2]);
             $fdt = $this->context->formdata('file');
