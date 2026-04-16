@@ -44,15 +44,15 @@
             \chdir($context->local()->assetsdir());
 
             $rest = $context->rest();
-            $this->file = implode(DIRECTORY_SEPARATOR, $rest);
-            $this->mtime = filemtime($this->file);
+            $this->file = \implode(DIRECTORY_SEPARATOR, $rest);
+            $this->mtime = \filemtime($this->file);
 /**
  * PHP file info does not give the correct mime type for compressed css files
  * so we need to do it ourselves which is a pain
  */
             $fname = \array_pop($rest);
             /** @psalm-suppress PossiblyFalseArgument */
-            $dotp = strrchr($fname, '.');
+            $dotp = \strrchr($fname, '.');
             if ($dotp !== FALSE)
             {
                 $ext = \strtolower(\substr($dotp, 1));
