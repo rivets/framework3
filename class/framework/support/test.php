@@ -206,7 +206,7 @@
                     }
                 }
                 $rest = $context->rest();
-                if (count($rest) == 4)
+                if (\count($rest) == 4)
                 {
                     $id = (int) $rest[3];
                     switch ($rest[2])
