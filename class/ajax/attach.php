@@ -49,11 +49,7 @@
         public function handle() : void
         {
             $context = $this->context;
-            $rest = $context->rest();
-            if (\count($rest) < 3)
-            {
-                throw new \Framework\Exception\BadValue(' missing parameter');
-            }
+            $rest = $context->rest(3);
             $type = \strtolower($rest[1]);
             $bean = $context->load($type, (int) $rest[2]);
             $fdt = $this->context->formdata('file');
