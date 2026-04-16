@@ -64,8 +64,12 @@
  *
  * @return array<string>
  */
-        public function rest() : array
+        public function rest(int $minLength = 0) : array
         {
+            if ($minLength > 0 && \count($this->reqrest) < $minLength)
+            {
+                throw new \Framework\Exception\BadValue('Missing parameter(s)');
+            }
             return $this->reqrest;
         }
 /**
