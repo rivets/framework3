@@ -68,7 +68,7 @@
         {
             if ($minLength > 0 && \count($this->reqrest) < $minLength)
             {
-                throw new \Framework\Exception\BadValue('Missing parameter(s)');
+                throw new \Framework\Exception\ParameterCount('Missing parameter(s)');
             }
             return $this->reqrest;
         }
