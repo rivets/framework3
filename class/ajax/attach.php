@@ -49,9 +49,9 @@
         public function handle() : void
         {
             $context = $this->context;
-            $rest = $context->rest(3);
-            $type = \strtolower($rest[1]);
-            $bean = $context->load($type, (int) $rest[2]);
+            [$type, $bid] = $this->restCheck(2); // 2 parameters expected
+            $type = \strtolower($type);
+            $bean = $context->load($type, (int) $bid);
             $fdt = $this->context->formdata('file');
             $table = $type < FW::UPLOAD ? $type.'_'.FW::UPLOAD : FW::UPLOAD.'_'.$type; // get names in right order for RedBean
             foreach ($fdt->fileArray('file') as $file) // @phan-suppress-current-line PhanUndeclaredMethod
