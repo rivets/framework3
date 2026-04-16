@@ -114,11 +114,7 @@
  */
         protected function restCheck(int $count) : array
         {
-            $rest = $this->context->rest();
-            if (\count($rest) <= $count) // there is always the AJAX op in there as well as its parameters
-            {
-                throw new \Framework\Exception\ParameterCount('Missing parameter');
-            }
+            $rest = $this->context->rest($count+1); // there is always the AJAX op in there as well as its parameters
             $res = \array_slice($rest, 1, $count);
             $res[] = \array_slice($rest, $count + 1); // return anything left - there might be optional parameters.
             return $res;
