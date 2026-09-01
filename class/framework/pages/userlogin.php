@@ -280,9 +280,10 @@
                 return $tpl;
             }
             $fdt = $context->formdata('post');
-            $rest = $context->rest();
-            if ($rest[0] === '')
+            [$param] = $context->rest();
+            switch ($param)
             {
+            case '':
                 $lg = $fdt->fetch('eorl', '');
                 if ($lg !== '')
                 {
@@ -298,9 +299,8 @@
                         $local->message(Local::WARNING, 'Sorry, there is no user with that name or email address.');
                     }
                 }
-            }
-            elseif ($rest[0] === 'reset')
-            {
+                break;
+            case 'reset':
                 $tpl = '@users/pwreset.twig';
                 $user = $fdt->mustFetchBean('uid', FW::USER);
                 $code = $fdt->mustFetch('code');
@@ -333,9 +333,8 @@
                     $context->divert('/');
                     /* NOT REACHED */
                 }
-            }
-            else
-            {
+                break;
+            default:
                 $x = R::findOne(FW::CONFIRM, 'code=? and kind=?', [$rest[0], 'P']);
                 if (\is_object($x))
                 {
@@ -353,6 +352,7 @@
                         $local->message(Local::ERROR, 'Sorry, that code has expired!');
                     }
                 }
+                break;
             }
             return $tpl;
         }
