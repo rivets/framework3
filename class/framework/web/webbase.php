@@ -47,7 +47,7 @@
             {
                 foreach ($vals as $v)
                 {
-                    \header($name.': '.$v);
+                    \header($name.': '.\preg_replace('/\\n/', '', $v)); // some hack attempts add newline characters to things
                 }
             }
             if (!empty($this->cache))

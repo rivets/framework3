@@ -30,7 +30,14 @@
         public static function eorl(string $lg, bool $active = TRUE) : ?\RedBeanPHP\OODBBean
         {
             $act = $active ? ' and active = 1' : '';
-            return R::findOne(FW::USER, (\filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?'.$act, [$lg]);
+            try
+            {
+                return R::findOne(FW::USER, (\filter_var($lg, FILTER_VALIDATE_EMAIL) !== FALSE ? 'email' : 'login').'=?'.$act, [$lg]);
+            }
+            catch(\RedBeanPHP\RedException\SQL $e)
+            { // usually someone messing around trying to hack in
+                return NULL;
+            }
         }
 /**
  * Make a confirmation code and store it in the database
