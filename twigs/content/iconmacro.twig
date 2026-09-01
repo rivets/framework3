@@ -2,9 +2,6 @@
   The fa macro is used by default so you can change which style it uses - regular (free), solid or duotone.
   fab is for brand icons and is also free.
 #}
-{% macro show(type, icon, other, title, attr) -%}
-    <i class="{{type}} fa-{{icon}}{{other != '' ? ' '~other : ''}}"{% if title != '' %} title="{{title}}"{% endif %}{% if attr != '' %} {{attr|raw}}{% endif %}></i>
-{%- endmacro show %}
 {% if fav6 is defined and fav6 %}
     {% include '@content/iconfav6.twig' %}
 {% else %}

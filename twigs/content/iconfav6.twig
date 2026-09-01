@@ -1,3 +1,7 @@
+{% macro show(type, icon, other, title, attr) -%}
+    <i class="{{type}} fa-{{icon}}{{other != '' ? ' '~other : ''}}"{% if title != '' %} title="{{title}}"{% endif %}{% if attr != '' %} {{attr|raw}}{% endif %}></i>
+{%- endmacro show %}
+
     {% macro fa(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fa-regular', icon, other, title, attr)}}{% endmacro fa %}
     {% macro far(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fa-regular', icon, other, title, attr)}}{% endmacro far %}
     {% macro fas(icon, other='', title='', attr='') %}{% import _self as s %}{{s.show('fa-solid', icon, other, title, attr)}}{% endmacro fas %}
