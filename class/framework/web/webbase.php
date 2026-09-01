@@ -47,7 +47,7 @@
             {
                 foreach ($vals as $v)
                 {
-                    \header($name.': '.\preg_replace('/\\n/', '', $v)); // some hack attempts add newline characters to things
+                    \header($name.': '.\preg_replace('/[\x00-\x1F\x7F]/', '', $v)); // some hack attempts add newline characters to things
                 }
             }
             if (!empty($this->cache))
