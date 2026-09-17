@@ -42,9 +42,14 @@
             $fdt = $this->context->formdata('post');
             $v = R::dispense(FW::CONFIG);
             $v->name = $name;
-            $v->value = $fdt->mustFetch('value');
-            $v->type = $fdt->mustFetch('type');
-            $v->local = $fdt->fetch('local', 0);
+            foreach (['value', 'type', 'integrity', 'crossorigin', 'refpolicy'] as $fld)
+            {
+                $v->$fld = $fdt->mustFetch($fld);
+            }
+            foreach (['local', 'fixed', 'defer', 'async'] as $fld)
+            {
+                $v->$fld = $fdt->fetch($fld, 0);
+            }
             echo R::store($v); // send back the id of the new config bean
         }
 /**

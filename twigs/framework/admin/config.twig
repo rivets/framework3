@@ -10,6 +10,8 @@
 {% set config = constant('Config\\Framework::CONFIG') %}
 
 {% block setup %}
+    const flags = {local: 'Xnewlocal', fixed: 'Xnfixed', defer: 'Xndefer', async: 'Xnasync'};
+    const strings = {value: 'Xnewval', type: 'Xntype', crossorigin: 'Xncor', integrity: 'Xninteg', refpolicy: 'Xnrefpol'];
     function setlocal(e)
     {
         e.preventDefault();
@@ -29,15 +31,11 @@
         framework.dodelbean(e, this, '{{config}}');
     }
 
-    function makeConfig(name, value, type, local)
+    function makeConfig(name, data)
     {
         framework.ajax('{{base}}/ajax/config/'+name, {
             method: 'POST', // because we are creating a new item
-            data: {
-                value,
-                type,
-                local
-            }
+            data: data
         }).done(function(data){
             let newd = document.createElement('div');
             let nname = document.getElementById('Xnewconf');
@@ -52,14 +50,19 @@
                     '<div class="col-md-2">'+
                         '<div class="form-check form-check-inline">'+
                             '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
-                        '</div>{{i.delete('delb')}}</div></div>';
+                        '</div>{{i.delete('delb')}}</div>';
             document.getElementById('cfr').insertBefore(newd, document.getElementById('nvbox').previousElementSibling);
             fwdom.on('.delb', 'click', delbean, newd)
             fwdom.on('.lval', 'change', setlocal, newd)
             nname.value = '';
-            document.getElementById('Xnewlocal').checked = 0;
-            document.getElementById('Xnewval').value = '';
-            document.getElementById('Xnewtype').value = '';
+            for (let nm, vl in flags)
+            {
+                document.getElementById(vl).checked = 0;
+            }
+            for (let nm,vl  of strings)
+            {
+                document.getElementById(vl).checked = 0;
+            }
             document.getElementById('inval').classList.add('d-none');
         }).fail(function(jx){
             framework.alert('<h3>Failed to add new configuration item</h3>'+jx.responseText);
@@ -80,19 +83,16 @@
         }).fail(function(jx){
             framework.alert('<h3>Update failed</h3>'+jx.responseText);
         });
-// clear out integrity and crossorigin - they might be diferent
-        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/integrity/', {
-            method: '{{patch}}', // because we are updating an item
-            data: { value: '' }
-        }).fail(function(jx){
-            framework.alert('<h3>Update failed</h3>'+jx.responseText);
-        });
-        framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/crossorigin/', {
-            method: '{{patch}}', // because we are updating an item
-            data: { value: '' }
-        }).fail(function(jx){
-            framework.alert('<h3>Update failed</h3>'+jx.responseText);
-        });
+// clear out strings as - they might be diferent
+        for (let nm in ['integrity', 'crossorigin', 'refpolicy'])
+        {
+            framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/'+nm+'/', {
+                method: '{{patch}}', // because we are updating an item
+                data: { value: '' }
+            }).fail(function(jx){
+                framework.alert('<h3>Update failed</h3>'+jx.responseText);
+            });
+        }
     });
     fwdom.on('#Xnewconf', 'blur', function(e){
         fwdom.stop(e);
@@ -114,12 +114,18 @@
             }
         }
     })
-    fwdom.on('#Xnewval', 'blur', function(e){
+    fwdom.on('#savebtn', 'click', function(e){
         fwdom.stop(e);
-        const type = document.getElementById('Xnewtype').value;
-        const name = document.getElementById('Xnewconf').value;
-        const local = document.getElementById('Xnewlocal').checked ? 1 : 0;
-        makeConfig(name, this.value, type, local);
+        let data = {};
+        for (let nm, vl in flags)
+        {
+            data[nm] = document.getElementById(vl).checked ? 1 : 0;
+        }
+        for (let nm,vl  of strings)
+        {
+            data[nm] = document.getElementById(vl).value;
+        }
+        makeConfig(name, data);
     });
 {% endblock onload %}
 
@@ -154,7 +160,6 @@
                 <div class="jumbotron" id="nvbox">
                     {{f.text({label: 'New Config Item', class: 'nname', id: 'Xnewconf', ph: 'Name for new config item' })}}
                     <div id="inval" class="d-none">
-                        {{f.text({label: 'New Value', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
                         {{f.select({label : 'Type', id: 'Xnewtype',
                             options: [
                                 { value: '',  text: '&mdash; Pick a Type &mdash;' },
@@ -166,6 +171,14 @@
                             ]
                         })}}
                         {{f.checkbox({ids: ['Xnewlocal'], labels: ['Local'], values : [1]})}}
+                        {{f.checkbox({ids: ['Xnfixed'], labels: ['Fixed'], values : [1]})}}
+                        {{f.text({label: 'Value', class: 'nval', id: 'Xnewval', ph: 'Value for new config item' })}}
+                        {{f.text({label: 'Cross Origin', class: 'ncor', id: 'Xncor', ph: 'Cross Origin value or empty' })}}
+                        {{f.text({label: 'Referrer Policy', class: 'nrefpol', id: 'Xnrefpol', ph: 'Referrer Policy value or empty' })}}
+                        {{f.text({label: 'Integrity', class: 'ninteg', id: 'Xninteg', ph: 'Integrity value or empty' })}}
+                        {{f.checkbox({ids: ['Xndefer'], labels: ['Defer'], values : [1]})}}
+                        {{f.checkbox({ids: ['Xnasync'], labels: ['Async'], values : [1]})}}
+                        <button id="savebtn" class="btn btn-primary">Save</button>
                     </div>
                 </div>
             {{f.endform()}}
