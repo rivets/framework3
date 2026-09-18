@@ -51,7 +51,7 @@
                         '<div class="form-check form-check-inline">'+
                             '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"'+
                             (data['local'] == 1 ? ' checked' : '') + '/> Local</label>'+
-                        '</div>{{i.delete('delb')}}</div>';
+                        '</div><a href="{{base}}/admin/edit/{{constant('Config\\Framework::CONFIG')}}/'+data+'/">{{i.edit('editb')}}</a>{{i.delete('delb')}}</div>';
             document.getElementById('cfr').insertBefore(newd, document.getElementById('nvbox').previousElementSibling);
             fwdom.on('.delb', 'click', delbean, newd)
             fwdom.on('.lval', 'change', setlocal, newd)
