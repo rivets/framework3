@@ -14,7 +14,9 @@
 
 {% macro cv(value)%} class="form-control{% if value != '' %} {{value}}{% endif %}"{% endmacro cv %}
 
-{% macro fv(opts)%}{% import _self as fx %}{% for v in ['required', 'disabled', 'readonly'] %}{{fx.cdb(opts[v], v)}}{% endfor %}{{fx.help(opts)}}{% endmacro fv %}
+{% macro fv(opts, ix = '')%}{% import _self as fx %}{% for v in ['required', 'disabled', 'readonly'] %}{%if ix == '' %}
+    {{fx.cdb(opts[v] is defined ?? fx.cdb(opts[v], v)}}{% else %}{{fx.cdb(opts[v][ix] is defined ?? fx.cdb(opts[v][ix], v)}}
+    {% endfor %}{{fx.help(opts)}}{% endmacro fv %}
 
 {% macro numopts(type, opts) %}{% if type == 'number' or type == 'range' %}{% import _self as fx %}{{fx.hv('min', opts.min)}}{{fx.hv('step', opts.step)}}{{fx.hv('max', opts.max)}}{{fx.hv('defaultValue', opts.dvalue)}}{% endif %}{% endmacro numopts %}
 
@@ -70,7 +72,8 @@
             <label class="form-check-label {{rspace is defined ? rspace : 'me-4'}}">
             {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
             <input type="checkbox" value="{{val}}"{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="me-2{{fx.cv('class', opts.class)}}"{{fx.data(opts.data)}}{{fx.on(opts)}}
-                {{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}{{fx.cdb(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled')}}{{fx.extra(opts)}}/>
+                {{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}
+                {{fx.fv(opts, ix)}}{{fx.extra(opts)}}/>
             {{opts.labels[ix]|raw}}</label>
         {{fx.bse(opts)}}
     {% endfor %}
@@ -84,7 +87,8 @@
             {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
             <label class="form-check-label {{rspace is defined ? rspace : 'me-4'}}">
                 <input type="radio" value="{{val}}"{{fx.cd(opts.name is defined, 'name', opts.name)}}{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="me-2{{fx.cv('class', opts.class)}}"
-                {{fx.data(opts.data)}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}{{fx.cdb(opts.disabled[ix] is defined and opts.disabled[ix], 'disabled')}}{{fx.extra(opts)}}/>
+                {{fx.data(opts.data)}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}
+                {{fx.fv(opts, ix))}}{{fx.extra(opts)}}/>
             {{opts.labels[ix]|raw}}</label>
         {{fx.bse(opts)}}
     {% endfor %}
