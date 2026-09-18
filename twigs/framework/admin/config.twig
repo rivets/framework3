@@ -45,22 +45,23 @@
             newd.innerHTML =
                 '<label class="col-md-1 col-form-label" for="X'+name+'">'+name+'</label>'+
                     '<div class="col-md-9">'+
-                            '<input type="text" id="X'+name+'" name="'+name+'" value="'+value+'" class="form-control cval"/>'+
+                            '<input type="text" id="X'+name+'" name="'+name+'" value="'+data[value]+'" class="form-control cval"/>'+
                     '</div>'+
                     '<div class="col-md-2">'+
                         '<div class="form-check form-check-inline">'+
-                            '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"/> Local</label>'+
+                            '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"+
+                            (data[local] == 1 ? ' checked' : '') + '/> Local</label>'+
                         '</div>{{i.delete('delb')}}</div>';
             document.getElementById('cfr').insertBefore(newd, document.getElementById('nvbox').previousElementSibling);
             fwdom.on('.delb', 'click', delbean, newd)
             fwdom.on('.lval', 'change', setlocal, newd)
             nname.value = '';
             for (let nm in flags)
-            {
-                document.getElementById(flags[nm]).checked = 0;
+            { // clear the flags
+                document.getElementById(flags[nm]).checked = data[nm];
             }
             for (let nm in strings)
-            {
+            { // clear the strings
                 document.getElementById(strings[nm]).checked = 0;
             }
             document.getElementById('inval').classList.add('d-none');
