@@ -111,17 +111,19 @@
             $bn->local = $fdt->fetch('local', 0);
             $bn->fixed = 0;
             $bn->integrity = '';
+            $bn->crossorigin = '';
+            $bn->refpolicy = '';
             $bn->defer = 0;
+            $bn->async = 0;
             \R::store($bn);
             return $bn;
         }
 /**
  * Setup for an edit
- *
- * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
  */
-        public function startEdit(Context $context) : void // @phan-suppress-current-line PhanUnusedPublicFinalMethodParameter Inherited function spec
+        public function startEdit(Context $context) : void
         {
+            $context->local()->addval('isURL', $this->bean->type == 'js' || $this->bean->type == 'css' || $this->bean->type == 'url');
         }
 /**
  * Handle an edit form for this fwconfig item

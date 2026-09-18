@@ -6,8 +6,6 @@
 
 {% import '@util/formmacro.twig' as f %}
 
-{% set isURL = (bean.type == 'js' or bean.type = 'js') ? TRUE : FALSE %}
-
 {% block onload %}
     document.getElementById('more').addEventListener('click', function(e){
         fwdom.stop(e);
