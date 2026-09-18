@@ -51,8 +51,8 @@
                             { value: 'url', text: 'url' },
                         ]
                     })}}
-                    {{f.checkbox({group: TRUE, names: ['Fixed'], values:[1], check: [bean.fixed], labels: ['Fixed']})}}
-                    {{f.checkbox({group: TRUE, names: ['Local'], values:[1], check: [bean.local], labels: ['Local']})}}
+                    {{f.checkbox({group: TRUE, names: ['Fixed', 'Local'], values:[1, 1], check: [bean.fixed, bean.local], labels: ['Fixed', 'Local']})}}
+                    {#{{f.checkbox({group: TRUE, names: ['Local'], values:[1], check: [bean.local], labels: ['Local']})}}#}
                     {{f.text({ label: 'Integrity', id: 'it', name: 'integrity', value: bean.integrity, disabled : isURL ? 0 : 1,
                         help: 'The hashcode value for the integrity attribute for URLs or leave empty'})}}
                     {{f.text({ label: 'CrossOrigin', id: 'co', name: 'crossorigin', value: bean.crossorigin, disabled : isURL ? 0 : 1,
