@@ -17,7 +17,7 @@
 {% macro fv(opts)%}{% import _self as fx %}{% for v in ['required', 'disabled', 'readonly'] %}{% if opts[v] is defined %}fx.cdb(opts[v], v)}}{% endif %}{% endfor %}{{fx.help(opts)}}{% endmacro fv %}
 
 {% macro fvix(opts, ix)%}{% import _self as fx %}{% for v in ['required', 'disabled', 'readonly'] %}{%if opts[v][ix] is defined %}fx.cdb(opts[v][ix], v)}}{% endif %}
-    {% endif %}{% endfor %}{{fx.helpix(opts, ix)}}{% endmacro fvix %}
+    {% endfor %}{{fx.helpix(opts, ix)}}{% endmacro fvix %}
 
 {% macro numopts(type, opts) %}{% if type == 'number' or type == 'range' %}{% import _self as fx %}{{fx.hv('min', opts.min)}}{{fx.hv('step', opts.step)}}{{fx.hv('max', opts.max)}}{{fx.hv('defaultValue', opts.dvalue)}}{% endif %}{% endmacro numopts %}
 
