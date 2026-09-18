@@ -35,7 +35,7 @@
 {% macro input(type, opts) %}
 {% import _self as fx %}
 <input type="{{type}}"{{fx.hv('id', opts.id)}}{{fx.fv(opts)}}{{fx.hv('name', opts.name)}}{{fx.hv('value', opts.value)}}{{fx.cv(opts.class)}}{{fx.hv('placeholder', opts.ph)}}{{fx.fileopts(type, opts)}}{{fx.numopts(type, opts)}}{{fx.data(opts.data)}}
-{{fx.parsley(opts.parsley)}}{{fx.valid(opts.valid)}}{{fx.extra(opts)}}//>
+{{fx.parsley(opts.parsley)}}{{fx.valid(opts.valid)}}{{fx.extra(opts)}}/>
 {% endmacro input %}
 
 {% macro bsl(opts) %}{% import _self as fx %}<div class="mb-3">
