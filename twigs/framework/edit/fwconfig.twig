@@ -59,7 +59,8 @@
                         help:'Valid values are <i>anonymous</i> or <i>use-credentials</i> or leave empty'})}}
                     {{f.text({ label: 'ReferrerPolicy', id: 'rp', name: 'refpolicy', value: bean.crossorigin, disabled : isURL ? 0 : 1,
                         help:'Check the HTML spec for valid values or leave empty'})}}
-                    {{f.checkbox({group: TRUE, names: ['Defer', 'Async'], values:[1, 1], check: [bean.defer, bean.async], labels: ['Defer']}, disabled : isURL ? 0 : 1)}}
+                    {{f.checkbox({group: TRUE, names: ['Defer', 'Async'], values:[1, 1], check: [bean.defer, bean.async],
+                        labels: ['Defer', 'Async']}, disabled : [isURL ? 0 : 1, isURL ? 0 : 1])}}
                     {#{{f.checkbox({group: TRUE, names: ['Async'], values:[1], check: [bean.async], labels: ['Async']}, disabled : [isURL ? 0 : 1, isURL ? 0 : 1])}}#}
 
                 </fieldset>
