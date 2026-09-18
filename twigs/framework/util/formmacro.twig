@@ -31,11 +31,11 @@
 
 {% macro help(opts) %}{% if opts.id is defined and opts.help is defined and opts.help != '' %} aria-describedby="{{opts.id}}Help"{% endif %}{% endmacro help %}
 
-{% macro helpix(opts, ix) %}{% if opts.ids[ix] is defined and opts.help[ix] is defined and opts.help[ix] != '' %} aria-describedby="{{opts.ids[ix]}}Help"{% endif %}{% endmacro help %}
+{% macro helpix(opts, ix) %}{% if opts.ids[ix] is defined and opts.help[ix] is defined and opts.help[ix] != '' %} aria-describedby="{{opts.ids[ix]}}Help"{% endif %}{% endmacro helpix %}
 
-{% macro on(opts) %}{% if opts.on is defined and opts.id != '' %}{% for e,v in opts.on %}{{context.saveon(opts.id, e, v)}}{% endfor %}{% endif %}{% endmacro on %}
+{% macro on(opts) %}{% if opts.on is defined and opts.id is defined and opts.id != '' %}{% for e,v in opts.on %}{{context.saveon(opts.id, e, v)}}{% endfor %}{% endif %}{% endmacro on %}
 
-{% macro onix(opts, ix) %}{% if opts.ons[ix] is defined and opts.ids[ix] != '' %}{% for e,v in opts.ons[ix] %}{{context.saveon(opts.ids[ix], e, v)}}{% endfor %}{% endif %}{% endmacro on %}
+{% macro onix(opts, ix) %}{% if opts.ons[ix] is defined and opts.ids[ix] is defined and opts.ids[ix] != '' %}{% for e,v in opts.ons[ix] %}{{context.saveon(opts.ids[ix], e, v)}}{% endfor %}{% endif %}{% endmacro onix %}
 
 {% macro extra(opts) %} {% if opts.extra is defined %}{% for v in opts.extra %} {{v|raw}}{% endfor %}{% endif %}{% endmacro extra %}
 
