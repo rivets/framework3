@@ -55,11 +55,11 @@
             fwdom.on('.delb', 'click', delbean, newd)
             fwdom.on('.lval', 'change', setlocal, newd)
             nname.value = '';
-            for (let nm,vl of flags)
+            for (let nm,vl in flags)
             {
                 document.getElementById(vl).checked = 0;
             }
-            for (let nm,vl of strings)
+            for (let nm,vl in strings)
             {
                 document.getElementById(vl).checked = 0;
             }
