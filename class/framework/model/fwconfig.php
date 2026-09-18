@@ -26,6 +26,7 @@
             'value'       => [TRUE, FALSE],         // [NOTEMPTY, CHECK/RADIO]
             'integrity'   => [FALSE, FALSE],
             'crossorigin' => [FALSE, FALSE],
+            'refpolicy'   => [FALSE, FALSE],
             'defer'       => [FALSE, TRUE],
             'async'       => [FALSE, TRUE],
             'type'        => [TRUE, FALSE],
@@ -83,7 +84,24 @@
             case 'js':
                 $this->checkURL('JavaScript');
                 break;
+            case 'url':
+                $this->checkURL('Url');
+                break;
+            case 'json':
+                if (!\json_validate($this->bean->value))
+                {
+                    throw new \Framework\Exception\BadValue('Invalid value for JSON item');
+                }
+                break;
             case 'string':
+                break;
+            case 'xml': // validate XML???
+                $xmlElement = new SimpleXMLElement($this->bean->value);
+                $xmlElement->rewind(); // rewind to the first element
+                if (!$xmlElement->valid())
+                {
+                    throw new \Framework\Exception\BadValue('Invalid value for XML item');
+                }
                 break;
             default:
                 throw new \Framework\Exception\BadValue('Invalid config item type: '.$this->bean->type);

@@ -48,18 +48,19 @@
                             { value: 'string', text: 'string' },
                             { value: 'json', text: 'json' },
                             { value: 'xml', text: 'xml' },
+                            { value: 'url', text: 'url' },
                         ]
                     })}}
-                    {{f.checkbox({group: TRUE, names: ['Fixed'], values:[1], check: [bean.fized], labels: ['Defer']})}}
-                    {{f.checkbox({group: TRUE, names: ['Local'], values:[1], check: [bean.local], labels: ['Async']})}}
-                    {{f.text({ label: 'Integrity', id: 'it', name: 'integrity', value: bean.integrity, disabled : {{isURL ? 0 : 1}},
+                    {{f.checkbox({group: TRUE, names: ['Fixed'], values:[1], check: [bean.fixed], labels: ['Fixed']})}}
+                    {{f.checkbox({group: TRUE, names: ['Local'], values:[1], check: [bean.local], labels: ['Local']})}}
+                    {{f.text({ label: 'Integrity', id: 'it', name: 'integrity', value: bean.integrity, disabled : isURL ? 0 : 1,
                         help: 'The hashcode value for the integrity attribute for URLs or leave empty'})}}
-                    {{f.text({ label: 'CrossOrigin', id: 'co', name: 'crossorigin', value: bean.crossorigin, disabled : {{isURL ? 0 : 1}},
+                    {{f.text({ label: 'CrossOrigin', id: 'co', name: 'crossorigin', value: bean.crossorigin, disabled : isURL ? 0 : 1,
                         help:'Valid values are <i>anonymous</i> or <i>use-credentials</i> or leave empty'})}}
-                    {{f.text({ label: 'ReferrerPolicy', id: 'rp', name: 'refpolicy', value: bean.crossorigin, disabled : {{isURL ? 0 : 1}},
+                    {{f.text({ label: 'ReferrerPolicy', id: 'rp', name: 'refpolicy', value: bean.crossorigin, disabled : isURL ? 0 : 1,
                         help:'Check the HTML spec for valid values or leave empty'})}}
-                    {{f.checkbox({group: TRUE, names: ['Defer'], values:[1], check: [bean.defer], labels: ['Defer']}, disabled : {{isURL ? 0 : 1}},)}}
-                    {{f.checkbox({group: TRUE, names: ['Async'], values:[1], check: [bean.async], labels: ['Async']}, disabled : {{isURL ? 0 : 1}},)}}
+                    {{f.checkbox({group: TRUE, names: ['Defer', 'Async'], values:[1, 1], check: [bean.defer, bean.async], labels: ['Defer']}, disabled : isURL ? 0 : 1)}}
+                    {#{{f.checkbox({group: TRUE, names: ['Async'], values:[1], check: [bean.async], labels: ['Async']}, disabled : [isURL ? 0 : 1, isURL ? 0 : 1])}}#}
 
                 </fieldset>
                 <button class="btn btn-primary btn-lg" type="submit">Save</button>
