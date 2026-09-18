@@ -31,11 +31,11 @@
         framework.dodelbean(e, this, '{{config}}');
     }
 
-    function makeConfig(name, data)
+    function makeConfig(name, pdata)
     {
         framework.ajax('{{base}}/ajax/config/'+name, {
             method: 'POST', // because we are creating a new item
-            data: data
+            data: pdata
         }).done(function(data){
             let newd = document.createElement('div');
             let nname = document.getElementById('Xnewconf');
@@ -45,12 +45,12 @@
             newd.innerHTML =
                 '<label class="col-md-1 col-form-label" for="X'+name+'">'+name+'</label>'+
                     '<div class="col-md-9">'+
-                            '<input type="text" id="X'+name+'" name="'+name+'" value="'+data['value']+'" class="form-control cval"/>'+
+                        '<input type="text" id="X'+name+'" name="'+name+'" value="'+pdata['value']+'" class="form-control cval"/>'+
                     '</div>'+
                     '<div class="col-md-2">'+
                         '<div class="form-check form-check-inline">'+
                             '<label class="form-check-label"><input class="lval" type="checkbox" value="1" name="L'+name+'"'+
-                            (data['local'] == 1 ? ' checked' : '') + '/> Local</label>'+
+                            (pdata['local'] == 1 ? ' checked' : '') + '/> Local</label>'+
                         '</div><a href="{{base}}/admin/edit/{{constant('Config\\Framework::CONFIG')}}/'+data+'/">{{i.edit('editb')}}</a>{{i.delete('delb')}}</div>';
             document.getElementById('cfr').insertBefore(newd, document.getElementById('nvbox').previousElementSibling);
             fwdom.on('.delb', 'click', delbean, newd)
