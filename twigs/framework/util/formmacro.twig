@@ -39,7 +39,7 @@
 
 {% macro extra(opts) %} {% if opts.extra is defined %}{% for v in opts.extra %} {{v|raw}}{% endfor %}{% endif %}{% endmacro extra %}
 
-{% macro extraix(opts, ix) %} {% if opts.extra[ix] is defined %}{% for v in opts.extra[ix] %} {{v|raw}}{% endfor %}{% endif %}{% endmacro extra %}
+{% macro extraix(opts, ix) %} {% if opts.extra[ix] is defined %}{% for v in opts.extra[ix] %} {{v|raw}}{% endfor %}{% endif %}{% endmacro extraix %}
 
 {% macro input(type, opts) %}
 {% import _self as fx %}
