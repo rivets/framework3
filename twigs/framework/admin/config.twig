@@ -55,13 +55,13 @@
             fwdom.on('.delb', 'click', delbean, newd)
             fwdom.on('.lval', 'change', setlocal, newd)
             nname.value = '';
-            for (let nm,vl in flags)
+            for (let nm in flags)
             {
-                document.getElementById(vl).checked = 0;
+                document.getElementById(flags[nm]).checked = 0;
             }
-            for (let nm,vl in strings)
+            for (let nm in strings)
             {
-                document.getElementById(vl).checked = 0;
+                document.getElementById(strings[nm]).checked = 0;
             }
             document.getElementById('inval').classList.add('d-none');
         }).fail(function(jx){
@@ -84,7 +84,7 @@
             framework.alert('<h3>Update failed</h3>'+jx.responseText);
         });
 // clear out strings as - they might be diferent
-        for (let nm in ['integrity', 'crossorigin', 'refpolicy'])
+        for (let nm of ['integrity', 'crossorigin', 'refpolicy'])
         {
             framework.ajax('{{base}}/ajax/bean/{{config}}/'+id+'/'+nm+'/', {
                 method: '{{patch}}', // because we are updating an item
@@ -117,13 +117,13 @@
     fwdom.on('#savebtn', 'click', function(e){
         fwdom.stop(e);
         let data = {};
-        for (let nm, vl in flags)
+        for (let nm in flags)
         {
-            data[nm] = document.getElementById(vl).checked ? 1 : 0;
+            data[nm] = document.getElementById(flags[nm]).checked ? 1 : 0;
         }
-        for (let nm,vl  of strings)
+        for (let nm in strings)
         {
-            data[nm] = document.getElementById(vl).value;
+            data[nm] = document.getElementById(strings[nm]).value;
         }
         makeConfig(name, data);
     });
