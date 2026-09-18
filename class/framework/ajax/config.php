@@ -44,11 +44,11 @@
             $v->name = $name;
             foreach (['value', 'type', 'integrity', 'crossorigin', 'refpolicy'] as $fld)
             {
-                $v->$fld = $fdt->mustFetch($fld);
+                $v->{$fld} = $fdt->mustFetch($fld);
             }
             foreach (['local', 'fixed', 'defer', 'async'] as $fld)
             {
-                $v->$fld = $fdt->fetch($fld, 0);
+                $v->{$fld} = $fdt->fetch($fld, 0);
             }
             echo R::store($v); // send back the id of the new config bean
         }
