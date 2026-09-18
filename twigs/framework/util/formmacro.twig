@@ -14,25 +14,31 @@
 
 {% macro cv(value)%} class="form-control{% if value != '' %} {{value}}{% endif %}"{% endmacro cv %}
 
-{% macro fv(opts, ix = '')%}{% import _self as fx %}{% for v in ['required', 'disabled', 'readonly'] %}{%if ix == '' %}
-    {{opts[v] is defined ?? fx.cdb(opts[v], v)}}{% else %}{{opts[v][ix] is defined ?? fx.cdb(opts[v][ix], v)}}{% endif %}
-    {% endfor %}{{fx.help(opts)}}{% endmacro fv %}
+{% macro fv(opts, ix = '')%}{% import _self as fx %}{% for v in ['required', 'disabled', 'readonly'] %}{{opts[v] is defined ?? fx.cdb(opts[v], v)}}{% endfor %}{{fx.help(opts)}}{% endmacro fv %}
+
+{% macro fvix(opts, ix)%}{% import _self as fx %}{% for v in ['required', 'disabled', 'readonly'] %}{{opts[v][ix] is defined ?? fx.cdb(opts[v][ix], v)}}{% endif %}{% endfor %}{{fx.helpix(opts, ix)}}{% endmacro fvix %}
 
 {% macro numopts(type, opts) %}{% if type == 'number' or type == 'range' %}{% import _self as fx %}{{fx.hv('min', opts.min)}}{{fx.hv('step', opts.step)}}{{fx.hv('max', opts.max)}}{{fx.hv('defaultValue', opts.dvalue)}}{% endif %}{% endmacro numopts %}
 
 {% macro fileopts(type, opts) %}{% if type == 'file' %}{% import _self as fx %}{{fx.hv('accept', opts.min)}}{{fx.cdb(opts.multiple, 'multiple')}}{% endif %}{% endmacro fileopts %}
 
-{% macro data(opts) %}{% for k,v in opts %} data-{{k}}{% if v != '' %}="{{v}}"{% endif %}{% endfor %}{% endmacro data %}
+{% macro data(dval) %}{% for k,v in dval %} data-{{k}}{% if v != '' %}="{{v}}"{% endif %}{% endfor %}{% endmacro data %}
 
 {% macro parsley(opts) %}{% for k,v in opts %} data-parsley-{{k}}{% if v != '' %}="{{v}}"{% endif %}{% endfor %}{% endmacro parsley %}
 
 {% macro valid(opts) %}{% for k,v in opts %} data-parsley-{{k}}{% if v != '' %}="{{v}}"{% endif %}{% endfor %}{% endmacro valid %}
 
-{% macro help(opts) %}{% if opts.help != '' %} aria-describedby="{{opts.id}}Help"{% endif %}{% endmacro help %}
+{% macro help(opts) %}{% if opts.id is defined and opts.help is defined and opts.help != '' %} aria-describedby="{{opts.id}}Help"{% endif %}{% endmacro help %}
+
+{% macro helpix(opts, ix) %}{% if opts.ids[ix] is defined and opts.help[ix] is defined and opts.help[ix] != '' %} aria-describedby="{{opts.ids[ix]}}Help"{% endif %}{% endmacro help %}
 
 {% macro on(opts) %}{% if opts.on is defined and opts.id != '' %}{% for e,v in opts.on %}{{context.saveon(opts.id, e, v)}}{% endfor %}{% endif %}{% endmacro on %}
 
+{% macro onix(opts, ix) %}{% if opts.ons[ix] is defined and opts.ids[ix] != '' %}{% for e,v in opts.ons[ix] %}{{context.saveon(opts.ids[ix], e, v)}}{% endfor %}{% endif %}{% endmacro on %}
+
 {% macro extra(opts) %} {% if opts.extra is defined %}{% for v in opts.extra %} {{v|raw}}{% endfor %}{% endif %}{% endmacro extra %}
+
+{% macro extraix(opts, ix) %} {% if opts.extra[ix] is defined %}{% for v in opts.extra[ix] %} {{v|raw}}{% endfor %}{% endif %}{% endmacro extra %}
 
 {% macro input(type, opts) %}
 {% import _self as fx %}
@@ -71,9 +77,9 @@
         <div class="form-check{%if opts.inline %} form-check-inline{% endif %}">
             <label class="form-check-label {{rspace is defined ? rspace : 'me-4'}}">
             {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
-            <input type="checkbox" value="{{val}}"{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="me-2{{fx.cv('class', opts.class)}}"{{fx.data(opts.data)}}{{fx.on(opts)}}
+            <input type="checkbox" value="{{val}}"{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="me-2{{fx.cv('class', opts.class[ix])}}"{{fx.data(opts.data[ix])}}{{fx.on(opts)}}
                 {{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}}
-                {{fx.fv(opts, ix)}}{{fx.extra(opts)}}/>
+                {{fx.fvix(opts, ix)}}{{fx.extraix(opts)}}/>
             {{opts.labels[ix]|raw}}</label>
         {{fx.bse(opts)}}
     {% endfor %}
@@ -86,9 +92,9 @@
         <div class="form-check{%if opts.inline %} form-check-inline{% endif %}">
             {% if opts.ons[ix] is defined %}{{fx.on({id: opts.ids[ix], on: opts.ons[ix]})}}{% endif %}
             <label class="form-check-label {{rspace is defined ? rspace : 'me-4'}}">
-                <input type="radio" value="{{val}}"{{fx.cd(opts.name is defined, 'name', opts.name)}}{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="me-2{{fx.cv('class', opts.class)}}"
-                {{fx.data(opts.data)}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}
-                {{fx.fv(opts, ix)}}{{fx.extra(opts)}}/>
+                <input type="radio" value="{{val}}"{{fx.cd(opts.name is defined, 'name', opts.name)}}{{fx.cd(opts.names[ix] is defined, 'name', opts.names[ix])}} class="me-2{{fx.cv('class', opts.class[ix])}}"
+                {{fx.data(opts.data[ix])}}{{fx.cd(opts.ids[ix] is defined, 'id', opts.ids[ix])}}{{fx.cdb(opts.check[ix] is defined and opts.check[ix], 'checked')}
+                {{fx.fvix(opts, ix)}}{{fx.extraix(opts)}}/>
             {{opts.labels[ix]|raw}}</label>
         {{fx.bse(opts)}}
     {% endfor %}
