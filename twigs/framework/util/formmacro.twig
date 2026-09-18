@@ -15,7 +15,7 @@
 {% macro cv(value)%} class="form-control{% if value != '' %} {{value}}{% endif %}"{% endmacro cv %}
 
 {% macro fv(opts, ix = '')%}{% import _self as fx %}{% for v in ['required', 'disabled', 'readonly'] %}{%if ix == '' %}
-    {{fx.cdb(opts[v] is defined ?? fx.cdb(opts[v], v)}}{% else %}{{fx.cdb(opts[v][ix] is defined ?? fx.cdb(opts[v][ix], v)}}{% endif %}
+    {{opts[v] is defined ?? fx.cdb(opts[v], v)}}{% else %}{{opts[v][ix] is defined ?? fx.cdb(opts[v][ix], v)}}{% endif %}
     {% endfor %}{{fx.help(opts)}}{% endmacro fv %}
 
 {% macro numopts(type, opts) %}{% if type == 'number' or type == 'range' %}{% import _self as fx %}{{fx.hv('min', opts.min)}}{{fx.hv('step', opts.step)}}{{fx.hv('max', opts.max)}}{{fx.hv('defaultValue', opts.dvalue)}}{% endif %}{% endmacro numopts %}
