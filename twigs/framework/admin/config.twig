@@ -6,11 +6,11 @@
 {% import '@content/iconmacro.twig' as i %}
 {% import '@util/formmacro.twig' as f %}
 
-{% set patch = constant('Config\\Config::PUTORPATCH') %}
+{% set patch  = constant('Config\\Config::PUTORPATCH') %}
 {% set config = constant('Config\\Framework::CONFIG') %}
 
 {% block setup %}
-    const flags = {local: 'Xnewlocal', fixed: 'Xnfixed', defer: 'Xndefer', async: 'Xnasync'};
+    const flags   = {local: 'Xnewlocal', fixed: 'Xnfixed', defer: 'Xndefer', async: 'Xnasync'};
     const strings = {value: 'Xnewval', type: 'Xntype', crossorigin: 'Xncor', integrity: 'Xninteg', refpolicy: 'Xnrefpol'];
     function setlocal(e)
     {
@@ -55,11 +55,11 @@
             fwdom.on('.delb', 'click', delbean, newd)
             fwdom.on('.lval', 'change', setlocal, newd)
             nname.value = '';
-            for (let nm, vl in flags)
+            for (let nm,vl of flags)
             {
                 document.getElementById(vl).checked = 0;
             }
-            for (let nm,vl  of strings)
+            for (let nm,vl of strings)
             {
                 document.getElementById(vl).checked = 0;
             }
